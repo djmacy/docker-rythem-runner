@@ -1,0 +1,180 @@
+.demo-playlists-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Center vertically within viewport */
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.demo-playlists-container h1 {
+    color: white;
+}
+
+.demo-playlists-container p {
+    color: white;
+}
+
+/* Sidebar styling */
+.sidebar {
+    position: fixed;
+    right: 0;
+    top: 13vh;
+    width: 0;
+    height: 80vh;
+    background-color: #41a386;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+    transition: width 0.4s ease;
+    overflow: hidden; /* Required for smooth transition */
+    z-index: 10;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+/* Active sidebar (when open) */
+.sidebar.open {
+    width: 25vw;
+}
+
+/* Content wrapper to manage opacity and visibility */
+.sidebar-content-wrapper {
+    flex-grow: 1;
+    overflow-y: auto; /* Enable scrolling here */
+    opacity: 0;
+
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+/* Visible content when the sidebar is open */
+.sidebar.open .sidebar-content-wrapper {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Custom scrollbar styles for sidebar-content-wrapper */
+.sidebar-content-wrapper::-webkit-scrollbar {
+    width: 8px; /* Adjust the width as needed */
+    /*padding: 3rem;*/
+}
+
+.sidebar-content-wrapper::-webkit-scrollbar-thumb {
+    background-color: #2d6e5a; /* Darker green color for the scrollbar thumb */
+    border-radius: 10px; /* Rounds the edges of the scrollbar */
+    margin-top: 20px;
+}
+
+/* Optionally, add hover effects for the thumb */
+.sidebar-content-wrapper::-webkit-scrollbar-thumb:hover {
+    background-color: #265f4e; /* Even darker green on hover */
+}
+
+/* Scrollable song list container */
+.song-list {
+    padding: 1rem; /* Add padding for better layout */
+   /* overflow-y: auto;*/
+}
+
+/*!* Scrollbar styling (unchanged) *!*/
+/*.song-list::-webkit-scrollbar {*/
+/*    width: 8px;*/
+/*}*/
+/*.song-list::-webkit-scrollbar-track {*/
+/*    background: transparent;*/
+/*}*/
+/*.song-list::-webkit-scrollbar-thumb {*/
+/*    background-color: #2d6e5a;*/
+/*    border-radius: 10px;*/
+/*}*/
+/*.song-list::-webkit-scrollbar-thumb:hover {*/
+/*    background-color: #265f4e;*/
+/*}*/
+
+.song-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.song-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    margin-left: 1rem;
+    object-fit: cover;
+}
+
+/* Song details */
+.song-details {
+    text-align:center;
+    flex: 1;
+    color: #fff;
+    margin-top: 0.3rem;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+
+}
+
+.song-title {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.song-artist {
+    font-size: 0.9rem;
+    color: #e0e0e0;
+    padding: 0;
+    margin-top: -0.5rem;
+}
+
+.song-duration {
+    font-size: 0.9rem;
+    color: #e0e0e0;
+    margin-right: 2rem;
+}
+
+/* Button container styling */
+.sidebar-buttons {
+    display: flex;
+    justify-content: space-around;
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.3rem;
+}
+
+/* Individual button styling */
+.pill-button {
+    background-color: #fff;
+    color: #41a386;
+    border: none;
+    border-radius: 20px;
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.pill-button:hover {
+    background-color: #e0e0e0;
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10; /* Makes sure it's above the button */
+    border-radius: 0;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}

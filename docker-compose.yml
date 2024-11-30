@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - Spotify__ClientId=${SPOTIFY_CLIENT_ID}
+      - Spotify__ClientSecret=${SPOTIFY_CLIENT_SECRET}
+      - Spotify__RedirectUri=${SPOTIFY_REDIRECT_URI}
+      - Spotify__Scope=${SPOTIFY_SCOPE}
+      - ConnectionStrings__DefaultConnection=${DB_CONNECTION_STRING}
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  db_data:

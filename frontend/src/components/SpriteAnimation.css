@@ -1,0 +1,173 @@
+.sprite-container {
+    width: 548px;
+    height:384px;
+    overflow:hidden;
+    position:relative;
+   /* background-image: url('../images/cover.PNG'); Set the background image */
+   /* background-size: 150px 175px; Adjust size if necessary */
+   /* background-position: 340px 100px; Adjust positioning if needed */
+   /* background-repeat: no-repeat;  Ensure the background doesn't repeat */
+}
+/*spreadsheet-icon*/
+.sprite-animation {
+    width: 548px;
+    height: 384px;
+    background-image: url('../images/sprite-sheet.png');
+    background-repeat: no-repeat;
+    display: block;
+    animation: sprite-animation alternate;
+    animation-duration: 2.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: steps(1, end);
+}
+
+@keyframes sprite-animation {
+    0% {
+        background-position: 0px 0px;
+    }
+    2.0833% {
+        background-position: -548px 0px;
+    }
+    4.1667% {
+        background-position: -1096px 0px;
+    }
+    6.25% {
+        background-position: -1644px 0px;
+    }
+    8.3333% {
+        background-position: -2192px 0px;
+    }
+    10.4167% {
+        background-position: -2740px 0px;
+    }
+    12.5% {
+        background-position: -3288px 0px;
+    }
+    14.5833% {
+        background-position: -3836px 0px;
+    }
+    16.6667% {
+        background-position: -4384px 0px;
+    }
+    18.75% {
+        background-position: -4932px 0px;
+    }
+    20.8333% {
+        background-position: -5480px 0px;
+    }
+    22.9167% {
+        background-position: -6028px 0px;
+    }
+    25% {
+        background-position: -6576px 0px;
+    }
+    27.0833% {
+        background-position: -7124px 0px;
+    }
+    29.1667% {
+        background-position: -7672px 0px;
+    }
+    31.25% {
+        background-position: -8220px 0px;
+    }
+    33.3333% {
+        background-position: -8768px 0px;
+    }
+    35.4167% {
+        background-position: -9316px 0px;
+    }
+    37.5% {
+        background-position: -9864px 0px;
+    }
+    39.5833% {
+        background-position: -10412px 0px;
+    }
+    41.6667% {
+        background-position: -10960px 0px;
+    }
+    43.75% {
+        background-position: -11508px 0px;
+    }
+    45.8333% {
+        background-position: -12056px 0px;
+    }
+    47.9167% {
+        background-position: -12604px 0px;
+    }
+    50% {
+        background-position: -13152px 0px;
+    }
+    52.0833% {
+        background-position: -13700px 0px;
+    }
+    54.1667% {
+        background-position: -14248px 0px;
+    }
+    56.25% {
+        background-position: -14796px 0px;
+    }
+    58.3333% {
+        background-position: -15344px 0px;
+    }
+    60.4167% {
+        background-position: -15892px 0px;
+    }
+    62.5% {
+        background-position: -16440px 0px;
+    }
+    64.5833% {
+        background-position: -16988px 0px;
+    }
+    66.6667% {
+        background-position: -17536px 0px;
+    }
+    68.75% {
+        background-position: -18084px 0px;
+    }
+    70.8333% {
+        background-position: -18632px 0px;
+    }
+    72.9167% {
+        background-position: -19180px 0px;
+    }
+    75% {
+        background-position: -19728px 0px;
+    }
+    77.0833% {
+        background-position: -20276px 0px;
+    }
+    79.1667% {
+        background-position: -20824px 0px;
+    }
+    81.25% {
+        background-position: -21372px 0px;
+    }
+    83.3333% {
+        background-position: -21920px 0px;
+    }
+    85.4167% {
+        background-position: -22468px 0px;
+    }
+    87.5% {
+        background-position: -23016px 0px;
+    }
+    89.5833% {
+        background-position: -23564px 0px;
+    }
+    91.6667% {
+        background-position: -24112px 0px;
+    }
+    93.75% {
+        background-position: -24660px 0px;
+    }
+    95.8333% {
+        background-position: -25208px 0px;
+    }
+    97.9167% {
+        background-position: -25756px 0px;
+    }
+    /*26304*/
+    100% {
+        background-position: 0px 0px;
+    }
+}

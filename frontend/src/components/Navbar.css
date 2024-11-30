@@ -1,0 +1,79 @@
+
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: background-color 0.3s ease-in-out, box-shadow 0.6s ease-in-out; /* Gradual transition for both */
+}
+
+.navbar.scrolled {
+    background-color: rgba(0, 0, 0, 0.5); /* Darker background when scrolled */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Enhance shadow */
+}
+
+.navbar-right {
+    display: flex;
+    gap: 1rem;
+    margin-left: auto;
+    padding-right:20px;
+}
+
+.navbar-right a {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border-radius: 30px;
+    background-color: rgba(0, 0, 0, 0.5); /* Slightly transparent */
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    opacity: 0; /* Start invisible */
+    transform: translateY(-100px); /* Start above view */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    animation: waveDrop 0.8s ease-out forwards;
+}
+
+.navbar-right a:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.navbar-right a:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.navbar-right a:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.navbar-right a:nth-child(4) {
+    animation-delay: 0.6s;
+}
+
+.navbar-right a:hover {
+    background-color: #FFD700; /* Highlight yellow on hover */
+    color: black; /* Change text color to black for contrast */
+}
+
+.text-logo-container {
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
+}
+
+.logo img {
+    width: 100px;
+    margin-right: 10px; /* Space between logo and text */
+}
+
+.spotify-text {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    font-size: 2.0rem;
+    line-height: 1;
+}

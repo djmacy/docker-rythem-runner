@@ -1,0 +1,205 @@
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    background: url('../images/SRHeroIcon.png') no-repeat center center;
+    background-size: cover;
+    color: white;
+    padding: 2rem;
+}
+
+.banner {
+   /* position: relative;*/
+    margin-top: 4rem;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Below the navbar */
+    margin-bottom: 4rem;
+}
+
+/* Center .hero-container without offset */
+.hero-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative; /* Set to relative */
+    text-align: center;
+    z-index: 2;
+    /*top: -30%;*/
+    left: -25%;
+}
+
+.hero-container h1 {
+    opacity: 0;
+  /*  transform: translateX(100%); /* Start from the right for text-run */
+    /*animation: slideIn 1s ease-out forwards;*/
+}
+
+/* This will animate the first h1 element (text-run) */
+.text-run {
+    font-size: 5rem;
+    font-family: sans-serif;
+    font-weight: bold;
+    background: linear-gradient(180deg, #2fa472, #54e38c); /* Green to lighter green */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+    line-height: 0.9;
+    animation: slideInRight 0.5s ease-out forwards;
+    animation-delay: 0s; /* No delay, animate first */
+}
+
+/* This will animate the second h1 element (text-to-the) */
+.text-to-the {
+    opacity: 0;
+    font-size: 3rem;
+    font-family: sans-serif;
+    font-weight: bold;
+    background: linear-gradient(180deg, #53e98d, #eddf59); /* Light green to yellow */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+    line-height: 0.9;
+    animation: slideInLeft 0.5s ease-out forwards; /* Apply the same animation */
+    animation-delay: 0.5s; /* 1 second delay for this element */
+    /*transform: translateX(-100%); /* Start from the left */
+}
+
+/* This will animate the third h1 element (text-beat) */
+.text-beat {
+    font-size: 4.2rem;
+    font-family: sans-serif;
+    font-weight: bold;
+    background: linear-gradient(180deg, #eddf59, #f94632); /* Yellow to red */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+    line-height: 0.9;
+    animation: slideInRight 0.5s ease-out forwards; /* Apply the same animation */
+    animation-delay: 1s; /* 2 second delay for this element */
+    /*transform: translateX(100%); /* Start from the right */
+}
+
+.spacer {
+    height: 20vh; /* Adjust this value to control spacing */
+    margin-bottom: 5vh;
+}
+
+.feature-text {
+
+    text-align: center;
+    align-self: center;
+    max-width: 600px;
+}
+
+.feature-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 1rem;
+}
+
+.feature-subtext {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    line-height: 1.5;
+    opacity: 0.9;
+
+}
+
+
+.card-container {
+    display: flex;
+    gap: 2.0rem;
+    justify-content: center;
+    margin-top: 2rem; /* Adds space between the feature text and the cards */
+    width: 100%;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 150px;
+    height: 250px;
+    /*background-color: rgba(255, 255, 255, 0.9);*/
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    background-size:cover;
+    background-position: center;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-top: 0.5rem;
+   /* background: #282c34;*/
+   /* border-radius: 15px;*/
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 1); /* Dark shadow for better visibility */
+}
+
+.preview-button {
+    display: inline-block;
+    padding: 0.5rem 1.7rem;
+    margin-bottom: 0.7rem;
+    background-color: #FFD700;
+    color: black;
+    font-weight: bold;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.preview-button:hover {
+    background-color: #ffc107;
+}
+
+/* Keyframes for the animation */
+@keyframes slideInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-100%); /* Start off-screen to the right */
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0); /* End in the normal position */
+    }
+}
+
+@keyframes slideInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(100%); /* Start off-screen to the right */
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0); /* End in the normal position */
+    }
+}
+
+@keyframes waveDrop {
+    0% {
+        transform: translateY(-100px); /* Start above the view */
+        opacity: 0;
+    }
+    40% {
+        transform: translateY(20px); /* Overshoot downward */
+        opacity: 1;
+    }
+    60% {
+        transform: translateY(-10px); /* Correct slightly back up */
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0); /* Settle at the final position */
+        opacity: 1;
+    }
+}

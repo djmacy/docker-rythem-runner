@@ -1,0 +1,178 @@
+.liked-songs-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    /* height: 100vh;*/
+    padding: 2rem;
+    /*  background-color: #f5f5f5;*/
+}
+
+.liked-bpm-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #41a386;
+    margin-top: 10rem;
+}
+
+.liked-slider-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.liked-slider {
+    width: 300px;
+    margin: 1rem 0;
+    cursor: pointer;
+}
+
+.liked-bpm-value {
+    font-size: 1.2rem;
+    color: #41a386; /* Matches your sidebar green */
+    font-weight: bold;
+}
+
+.liked-songs-page {
+    padding: 2rem;
+    background-color: #41a386;
+    border-radius: 1rem;
+    width: 80%; /* Ensure it stretches within its parent container */
+    /* max-width: 1200px; /* Matches the grid's max-width for consistency */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers all child content */
+    justify-content: center;
+    margin: 1rem auto; /* Center the entire playlists-page block */
+    /*border: 1px dashed blue;*/
+}
+
+.liked-title {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+/* Styles for the actions */
+.my-liked-songs-actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly; /* Evenly distribute space between, around, and inside the columns */
+    align-items: flex-start; /* Aligns both columns at the top */
+    margin-bottom: 1rem;
+}
+
+.liked-left-column,
+.liked-right-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers content horizontally */
+    gap: 0.5rem; /* Adds spacing between elements */
+}
+
+.liked-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #2d6a4f;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.liked-btn:hover {
+    background-color: #1b4332;
+}
+
+/* Styles for disabled state */
+.liked-btn:disabled {
+    background-color: #a5a5a5; /* Gray color for disabled buttons */
+    color: #dcdcdc; /* Light gray for text */
+    cursor: not-allowed; /* Indicates that the button is disabled */
+    opacity: 0.7; /* Makes the button visually distinct */
+}
+
+/* Disable hover effects when the button is disabled */
+.liked-btn:disabled:hover {
+    background-color: #a5a5a5; /* Retain the disabled background color */
+}
+
+.filtered-liked-songs {
+    width: 100%;
+}
+
+/* Scrollable song list container */
+.liked-song-list {
+    width: 100%; /* Take full width of the parent container */
+    padding: 1rem; /* Add padding for spacing */
+    box-sizing: border-box; /* Include padding in width/height */
+}
+
+/* Individual song item */
+.liked-song-item {
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Vertically center content */
+    justify-content: space-between; /* Space out content */
+    padding: 0.5rem 0; /* Add vertical spacing */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Divider */
+}
+
+/* Image styling */
+.liked-song-image {
+    width: 60px; /* Slightly larger for better visibility */
+    height: 60px;
+    border-radius: 5px;
+    margin-right: 1rem; /* Space between image and details */
+    object-fit: cover; /* Ensure the image fills the space */
+}
+
+/* Song details container */
+.liked-song-details {
+    flex: 2; /* Take more space for song details */
+    display: flex;
+    text-align:center;
+    flex-direction: column; /* Stack title and artist vertically */
+    justify-content: center; /* Vertically align details */
+    color: #fff;
+    margin-left: 1rem; /* Add space between image and details */
+}
+
+.liked-song-title {
+    font-size: 1.2rem; /* Slightly larger font for title */
+    font-weight: bold;
+    margin: 0; /* Reset default margin */
+}
+
+.liked-song-artist {
+    font-size: 1rem;
+    color: #e0e0e0; /* Subtle color for artist */
+    margin: 0.2rem 0 0; /* Space above artist */
+}
+
+/* Duration styling */
+.liked-song-duration {
+    font-size: 1rem;
+    color: #e0e0e0;
+    margin-right: 1rem; /* Space between duration and button */
+    white-space: nowrap; /* Prevent wrapping */
+}
+
+/* Remove button styling */
+.liked-remove-song-btn {
+    background: #ff4d4f;
+    color: white;
+    border: none;
+    border-radius: 10%;
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.liked-remove-song-btn:hover {
+  /*  transform: scale(1.2); /* Slight zoom effect on hover */
+    background: #ff7875;
+}

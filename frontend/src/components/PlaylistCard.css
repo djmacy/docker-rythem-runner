@@ -1,0 +1,72 @@
+.playlist-card {
+    position: relative;
+    flex: 1 1 150px; /* Grow to fill space but maintain a minimum width of 200px */
+    max-width: 150px; /* Prevent the card from becoming too large */
+    /*margin-left: auto; !* Pushes cards to balance spacing *!*/
+    /*margin-right: auto; !* Keeps cards evenly spaced within rows *!*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #fefefe;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.playlist-card.selected {
+    border-color: #41a386; /* Highlight color for selected cards */
+    box-shadow: 0px 6px 12px rgba(65, 163, 134, 0.5);
+}
+
+.selection-circle {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #ddd;
+    border: 2px solid #fefefe;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    pointer-events: none;
+}
+
+.selection-circle:hover {
+    background-color: #bbb;
+}
+
+.playlist-card.selected .selection-circle {
+    background-color: #41a386; /* Match the highlight color */
+}
+
+/*.playlist-card:last-child {*/
+/*    margin-right: auto; !* Ensures no excessive gap on the last card *!*/
+/*}*/
+
+.playlist-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.playlist-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    object-fit: cover;
+}
+
+.playlist-details {
+    text-align: center;
+}
+
+.playlist-name {
+    font-size: 1.2rem;
+    color: #333;
+    margin: 0;
+}

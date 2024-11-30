@@ -1,0 +1,156 @@
+.playlists-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+   /* height: 100vh;*/
+    padding: 2rem;
+  /*  background-color: #f5f5f5;*/
+}
+
+.bpm-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #41a386;
+    margin-top: 10rem;
+}
+
+.slider-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.slider {
+    width: 300px;
+    margin: 1rem 0;
+    cursor: pointer;
+}
+
+.bpm-value {
+    font-size: 1.2rem;
+    color: #41a386; /* Matches your sidebar green */
+    font-weight: bold;
+}
+
+.playlists-page {
+    padding: 2rem;
+    background-color: #41a386;
+    border-radius: 1rem;
+    width: 80%; /* Ensure it stretches within its parent container */
+   /* max-width: 1200px; /* Matches the grid's max-width for consistency */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers all child content */
+    justify-content: center;
+    align-items: center;
+    margin: 1rem auto; /* Center the entire playlists-page block */
+    /*border: 1px dashed blue;*/
+}
+
+.playlists-title {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+.playlist-search {
+    width: 100%;
+    max-width: 300px;
+    padding: 8px 12px;
+    margin-bottom: 2rem;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Styles for the actions */
+.my-playlists-actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly; /* Evenly distribute space between, around, and inside the columns */
+    align-items: flex-start; /* Aligns both columns at the top */
+    margin-bottom: 1rem;
+}
+
+.left-column,
+.right-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers content horizontally */
+    gap: 0.5rem; /* Adds spacing between elements */
+}
+
+.remove-song-btn {
+    background: #ff4d4f;
+    color: white;
+    border: none;
+    border-radius: 10%;
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.remove-song-btn:hover {
+    background: #ff7875;
+}
+
+.song-item:active {
+    cursor: grabbing;
+}
+
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #2d6a4f;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #1b4332;
+}
+
+/* Styles for disabled state */
+.btn:disabled {
+    background-color: #a5a5a5; /* Gray color for disabled buttons */
+    color: #dcdcdc; /* Light gray for text */
+    cursor: not-allowed; /* Indicates that the button is disabled */
+    opacity: 0.7; /* Makes the button visually distinct */
+}
+
+/* Disable hover effects when the button is disabled */
+.btn:disabled:hover {
+    background-color: #a5a5a5; /* Retain the disabled background color */
+}
+
+.playlists-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Aligns cards to the left */
+    gap: 1.5rem; /* Adds consistent spacing between cards */
+    width: 100%;
+    max-width: 1200px;
+    position: relative; /* Ensures cards remain inside the container */
+    padding: 0 1.5rem; /* Add padding to help with alignment */
+}
+
+/* Styles for the disabled state */
+.pill-button:disabled {
+    background-color: #a5a5a5; /* Gray color for disabled buttons */
+    color: #dcdcdc; /* Light gray text */
+    cursor: not-allowed; /* Indicate the button is not clickable */
+    opacity: 0.7; /* Slight transparency for distinction */
+}
+
+/* Remove hover effects when disabled */
+.pill-button:disabled:hover {
+    background-color: #a5a5a5; /* Retain the disabled background */
+    color: #dcdcdc; /* Keep text color consistent */
+}
