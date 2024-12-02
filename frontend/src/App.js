@@ -7,6 +7,7 @@ import {checkSpotifyLogin, isPremium} from './services/spotifyService';
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isPremiumUser, setIsPremiumUser] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchAuthAndPremiumStatus = async () => {
@@ -14,6 +15,7 @@ function App() {
                 // Check if the user is logged in
                 const loginStatus = await checkSpotifyLogin();
                 setIsAuthenticated(loginStatus);
+                console.log("Login status: ", loginStatus);
 
                 if (loginStatus) {
                     // If logged in, check if the user has premium
@@ -23,7 +25,10 @@ function App() {
                 }
             } catch (error) {
                 console.error('Error fetching authentication or premium status:', error);
-            }
+            } finally {
+                setLoading(false);
+                console.log("Loading state: false");
+            }   
         };
 
         fetchAuthAndPremiumStatus();
@@ -31,10 +36,17 @@ function App() {
 
     return (
         <Router>
-            <Navbar isAuthenticated={isAuthenticated} isPremium={isPremiumUser} />
-            <RoutesComponent isAuthenticated={isAuthenticated} isPremium={isPremiumUser} />
+            {loading ? (
+                <div>Loading...</div>  // Show loading screen until data is ready
+            ) : (
+                <>
+                    <Navbar isAuthenticated={isAuthenticated} isPremium={isPremiumUser} />
+                    <RoutesComponent isAuthenticated={isAuthenticated} isPremium={isPremiumUser} loading={loading} />
+                </>
+            )}
         </Router>
     );
+
 }
 
 export default App;

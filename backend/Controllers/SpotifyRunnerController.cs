@@ -55,6 +55,7 @@ namespace spotifyRunnerApp.Controllers
             string state = GenerateRandomString(16);
             // store the state in a session so we can check later.
             HttpContext.Session.SetString("OAuthState", state);
+            Console.WriteLine($"Generated OAuthState: {state}");
             // URL used to send the user to the Spotify Login screen and show perm we need in order to run our endpoints.
             string spotifyAuthUrl = _spotifyAPIService.BuildSpotifyAuthUrl(clientId, redirectUri, scope, state);
             // This redirection will take us to the spotify login. If user accepts, spotify will then redirect them back to our site using redirect URI
@@ -65,12 +66,13 @@ namespace spotifyRunnerApp.Controllers
         // As part of the redirection above spotify redirects the user back to the url you specified as redirect_uri during the authorization request
         // In ASP.NET parameters in query string are automatically bound to method parameters so the code and state are coming straight from Spotify
         // response. This endpoint will grab the auth token for us to be able to make api calls to spotify regarding our users music.
-        [HttpGet("callback")]
-        public async Task<IActionResult> Callback(string code, string state)
+        [HttpPost("callback")]
+        public async Task<IActionResult> Callback([FromBody] OAuthCallbackData callbackData)
         {
             // Check the session variable to make sure the states match.
             var storedState = HttpContext.Session.GetString("OAuthState");
-            if (string.IsNullOrEmpty(state) || state != storedState)
+            Console.WriteLine($"Stored State: {storedState}, Received State: {callbackData.State}");
+            if (string.IsNullOrEmpty(callbackData.State) || callbackData.State != storedState)
             {
                 return BadRequest("State mismatch error");
             }
@@ -83,7 +85,7 @@ namespace spotifyRunnerApp.Controllers
             var redirectUri = GetConfigValue("Spotify:RedirectUri");
 
             // Retrieves the authentication
-            var tokenResponse = await _spotifyAPIService.ExchangeCodeForToken(code, clientId, clientSecret, redirectUri);
+            var tokenResponse = await _spotifyAPIService.ExchangeCodeForToken(callbackData.Code, clientId, clientSecret, redirectUri);
             if (!tokenResponse.IsSuccessStatusCode)
             {
                 return BadRequest("Failed to exchange code for token");
@@ -102,7 +104,7 @@ namespace spotifyRunnerApp.Controllers
             // Upsert user information
             await _userService.UpsertUser(userId, tokenData.AccessToken, tokenData.ExpiresIn, tokenData.RefreshToken);
             Console.WriteLine(new { message = "Access token received", accessToken = tokenData.AccessToken, userId });
-            return Redirect("http://localhost:3000");
+            return Redirect("https://rythemrunner.com");
         }
 
         [HttpGet("myLikedSongs")]

@@ -7,6 +7,7 @@ const Home = () => {
 
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isPremiumUser, setIsPremiumUser] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isAccessGranted, setIsAccessGranted] = useState(false);
@@ -29,7 +30,9 @@ const Home = () => {
                 }
             } catch (error) {
                 console.error('Error fetching authentication or premium status:', error);
-            }
+            } finally {
+                setLoading(false);
+	    }
         };
 
         fetchAuthAndPremiumStatus();
@@ -44,7 +47,11 @@ const Home = () => {
         }
     };
 
-    if (!isAccessGranted && !isAuthenticated) {
+    if(loading) {
+        return <div>Loading...</div>;
+    }
+ 
+     if (!isAccessGranted && !isAuthenticated) {
         return (
             <div style={{alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}>
                 <h2 style={{marginTop: '100px', color: '#fff'}}>App is still under development.</h2>

@@ -4,7 +4,11 @@ services:
     build:
       context: ./frontend
     ports:
-      - "3000:80"
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /var/log/nginx:/var/log/nginx
     depends_on:
       - backend
 
@@ -12,7 +16,7 @@ services:
     build:
       context: ./backend
     ports:
-      - "8080:8080"
+      - "5245:5245"
     depends_on:
       - db
     environment:
@@ -21,6 +25,8 @@ services:
       - Spotify__RedirectUri=${SPOTIFY_REDIRECT_URI}
       - Spotify__Scope=${SPOTIFY_SCOPE}
       - ConnectionStrings__DefaultConnection=${DB_CONNECTION_STRING}
+    volumes:
+      - /var/keys:/app/keys  # Mount /var/keys on the host to /app/keys in the container
   db:
     image: postgres:15
     environment:

@@ -19,6 +19,7 @@ const Header = () => {
     const handleLogin = async (url) => {
         try {
             const isLoggedIn = await checkSpotifyLogin();
+            console.log('Header.js: '+ isLoggedIn);
             if (isLoggedIn) {
                 navigate(url);
             } else {

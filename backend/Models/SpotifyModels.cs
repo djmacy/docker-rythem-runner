@@ -4,6 +4,12 @@ namespace SpotifyRunnerApp.Models
     using System.Text.Json;
     using System.Text.Json.Serialization;
 
+    public class OAuthCallbackData
+    {
+        public string Code { get; set; }
+        public string State { get; set; }
+    }
+    
     public class TokenResponse
     {
         [JsonPropertyName("access_token")]
