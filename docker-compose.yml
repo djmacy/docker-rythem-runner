@@ -3,7 +3,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      target: production
+      target: ${ENVIRONMENT}
     ports:
       - "80:80"
       - "443:443"
