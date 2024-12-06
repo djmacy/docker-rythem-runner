@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using SpotifyRunnerApp.Services;
 using SpotifyRunnerApp.Models;
+using Microsoft.OpenApi.Services;
 
 namespace spotifyRunnerApp.Controllers
 {
@@ -104,7 +105,8 @@ namespace spotifyRunnerApp.Controllers
             // Upsert user information
             await _userService.UpsertUser(userId, tokenData.AccessToken, tokenData.ExpiresIn, tokenData.RefreshToken);
             Console.WriteLine(new { message = "Access token received", accessToken = tokenData.AccessToken, userId });
-            return Redirect("https://rythemrunner.com");
+            var response = new { status = "success" };
+            return Ok(response);
         }
 
         [HttpGet("myLikedSongs")]

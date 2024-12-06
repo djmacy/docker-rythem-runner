@@ -1,9 +1,11 @@
 .env
 node_modules/
 .vscode/
+.vs
 *.log
 node_modules/
 bin/
 SpotifyRunnerApp.http
 obj/
 SpotifyRunnerApp.csproj.user
+docker-compose.override.yml

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const SpotifyCallback = () => {
+    const apiUrl = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -18,10 +19,10 @@ const SpotifyCallback = () => {
         // Send the code and state to the backend
         const sendCallbackData = async () => {
             try {
-                const response = await fetch('/spotifyRunner/callback', {
+                const response = await fetch(`${apiUrl}/spotifyRunner/callback`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ code, state }),
                     credentials: 'include', // Important for sending cookies
@@ -36,12 +37,12 @@ const SpotifyCallback = () => {
                 window.location.reload();
             } catch (error) {
                 console.error('Error during callback processing: ', error);
-                navigate('/error'); // Redirect to error page if something goes wrong
+                navigate('/'); // Redirect to error page if something goes wrong
             }
         };
 
         sendCallbackData();
-    }, [navigate]);
+    }, [apiUrl, navigate]);
 
     return <div>Processing your request...</div>;
 };

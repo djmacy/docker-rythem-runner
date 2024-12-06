@@ -49,8 +49,8 @@ var app = builder.Build();
 
 app.Urls.Add("http://0.0.0.0:5245");
 
-app.UseSession();
 app.UseCors("AllowReactApp");
+app.UseSession();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
