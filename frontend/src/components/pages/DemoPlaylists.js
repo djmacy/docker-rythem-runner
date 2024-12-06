@@ -9,32 +9,42 @@ import {
     getRockPlaylist,
     getHipHopPlaylist,
     queuePlaylist,
-    checkSpotifyLogin, getDevices, getUserPlaylist
+    getDevices
 } from "../../services/spotifyService";
 import SpriteAnimation from '../SpriteAnimation';
-import {useNavigate} from "react-router-dom";
 import ModalDevices from "../ModalDevices";
 import ModalQueue from "../ModalQueue";
 
 const DemoPlaylists = () => {
-    const navigate = useNavigate();
-
+    //sidebar is used to show the songs for each playlist. Will conditionally show the sidebar based on this bool
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    //this hook attached to the sidebar that way we can use it for a event handler where we click off the
+    //sidebar and it closes it for UX
     const sidebarRef = useRef(null);
+    //List of songs that will be sent to the service for queueing, ONLY has the uris
     const [songs, setSongs] = useState([]);
+    //list of the popSongs from the popPlaylist also retrieved from the backend, including metadata
     const [popSongs, setPopSongs] = useState([]);
+    //list of the rockSongs from the rockPlaylist also retrieved from the backend, including metadata
     const [rockSongs, setRockSongs] = useState([]);
+    //list of hipHop songs from the hipHopPlaylist also retrieved from the backend, including metadata
     const [hipHopSongs, setHipHopSongs] = useState([]);
+    //This is how we know which songs to send based on the current card selected.
     const [currentCard, setCurrentCard] = useState(null);
-   // const [uris, setUris] = useState([]);
+    //show animation while loading
     const [loading, setLoading] = useState(false);
+    //response is used after we queue to show the user it was success
     const [response, setResponse] = useState(null);
+    //list of devices that the user for Spotify to queue music. Without a device we cannot queue.
     const [devices, setDevices] = useState([]);
+    //used to conditionally render the modal
     const [isModalOpen, setIsModalOpen] = useState(false);
+    //boolean used to disable the queue button. If the user does not have any devices they cant queue
     const [canQueue, setCanQueue] = useState(false);
+    //Used to show the success/failure modal after queue
     const [isModalQueueOpen, setIsModalQueueOpen] = useState(false);
 
-
+    //The associated pre-made playlists
     const cards = [
         {
             id: 1,
@@ -55,18 +65,24 @@ const DemoPlaylists = () => {
             songs: rockSongs,
         },
     ];
+
+    //onLoad fetch the devices. This function will call fetch devices defined below.
     useEffect(() => {
         fetchDevices();
-        console.log(devices);
-        console.log(isModalOpen);
+        //console.log(devices);
+        //console.log(isModalOpen);
     }, []);
 
+    //this method will call my getDevices service which calls the backend to check for available devices
+    //If the user has a device is will close the modal and set canQueue to true.
     const fetchDevices = async () => {
         try {
             const playableDevices = await getDevices();
-            console.log(playableDevices); // Log the fetched devices
+            //console.log(playableDevices); // Log the fetched devices
             setDevices(playableDevices);
-
+            //If user has no devices or the return is an empty list set canQueue to false and open the modal
+            //showing that they have no devices available. otherwise set the boolean to false for the modal
+            //and allow for queue
             if (!playableDevices || playableDevices.devices?.length === 0) {
                 setCanQueue(false);
                 setIsModalOpen(true);
@@ -76,11 +92,12 @@ const DemoPlaylists = () => {
             }
         } catch (error) {
             console.error("Error fetching devices: ", error);
-            setIsModalOpen(true);  // Optionally show modal on error
+            setIsModalOpen(true);
             setCanQueue(false);
         }
     };
 
+    //based on the card clicked set the songs on the sidebar to show the corresponding playlist
     const toggleSidebar = (card, event) => {
         event.stopPropagation();
         // console.log(card);
@@ -92,15 +109,21 @@ const DemoPlaylists = () => {
         //setIsSidebarOpen(true);
         //Timeout created to hopefully deal with conflict with useEffect handleClickOutside
         setTimeout(() => {
+            //true if the sidebar is already open and the same playlist was clicked
             const shouldClose = isSidebarOpen && currentCard?.id === card.id;
-
+            //if the same playlist is clicked and the sidebar is already open just close it for UX
             if (shouldClose) {
                 setIsSidebarOpen(false);
                 return;
             }
 
+            //if the current card is not the new card selected. Otherwise just set the songs for the sidebar and
+            //open it
             if (currentCard?.id !== card.id) {
+                //close the sidebar
                 setIsSidebarOpen(false);
+                //set a short timeout to illustrate the animation and reset the songs and change the current
+                //playlist selected. Once that is done. Reopen the sidebar
                 setTimeout(() => {
                     setSongs(card.songs);
                     setCurrentCard(card);
@@ -114,6 +137,7 @@ const DemoPlaylists = () => {
         }, 0)
     };
 
+    //at this hook for when outside of the sidebar is clicked so that it closes the sidebar
     useEffect(() => {
        const handleClickOutside = (event) => {
            //console.log('Clicked outside:', event.target);
@@ -132,48 +156,47 @@ const DemoPlaylists = () => {
        }
     }, [isSidebarOpen]);
 
+    //queue the songs based on a playlist selected
     const handleQueue = async () => {
-        console.log("Queue button clicked");
-
+        //console.log("Queue button clicked");
         try {
+            //before queueing make sure we check for available devices. If there are no devices, return
             fetchDevices();
             if (!canQueue) {
                 return;
             }
+            //start the animation
             setLoading(true);
+            //grab the uris from the list of songs based on the playlist selected
             const uris = songs.map((song) => song.uri);
-            console.log(uris)
+            //console.log(uris)
+            //grab a device id. It does not matter which one as Spotify will queue on all devices but this ensures
+            //no error on our end
             const deviceId = devices.devices[0]?.id;
 
+            //again if there is no device id return
             if (!deviceId) {
                 console.error("No device ID found");
-                return; // Handle the case where deviceId is not available
+                return;
             }
+            //call the service which will queue the playlist
             const result = await queuePlaylist(uris, deviceId);
             setResponse(result);
-            console.log(result);
-
+            //console.log(result);
         } catch (error) {
-            console.log(`Failed to queue songs: ${error.message}`);
+            console.error(`Failed to queue songs: ${error.message}`);
         } finally {
+            //close the animation
             setLoading(false);
+            //regardless of outcome show the modal with information on how the queue process went.
             if (canQueue) {
-                setIsModalQueueOpen(true); // Ensure the modal opens in case of an error
+                setIsModalQueueOpen(true);
             }
         }
     };
 
+    //onLoad grab the songs for each respective playlist and map to the cards created above
     useEffect(() => {
-        // const isLoggedIn = async () => {
-        //     const loggedIn = await checkSpotifyLogin();
-        //     setLoggedIn(loggedIn);
-        // }
-        // isLoggedIn();
-        // console.log(loggedIn);
-        // if (!loggedIn) {
-        //     navigate('/');
-        //     return;
-        // }
 
         const popPlaylist = async () => {
             const songs = await getPopPlaylist();
@@ -229,14 +252,20 @@ const DemoPlaylists = () => {
         hipHopPlaylist();
     }, [])
 
+    //used to convert the time in ms to min and seconds
     const formatDuration = (durationMs) => {
+        //60000 comes from 60 (seconds in a minute) * 1000 (milliseconds in a second)
+        //dividing the ms by 60,000 will give us the value in minutes. Then we floor it because we dont want a
+        //decimal value for the minutes but rather the seconds of a minute which will require some mod
         const minutes = Math.floor(durationMs / 60000);
+        //get the remainder of ms by minutes and and divide the minutes by milleseconds to get the exact
+        //second in that minute. Since we already have minutes calculated above we only care about the seconds
         const seconds = ((durationMs % 60000) / 1000).toFixed(0);
+        //template literal displaying the value in human time, if seconds is below 10 add a leading zero.
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     }
 
     return(
-
         <div className="demo-playlists-container">
             <div>
                 <h1>Demo Playlists</h1>

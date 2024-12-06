@@ -5,23 +5,29 @@ import RoutesComponent from "./Routes";
 import {checkSpotifyLogin, isPremium} from './services/spotifyService';
 
 function App() {
+    //This is used to see if the user is logged in to spotify.
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    //This is used to see if the user is a premium subscriber for Spotify. If user is not
+    //premium the rest of the app is basically inaccessible.
     const [isPremiumUser, setIsPremiumUser] = useState(false);
+    //Used to rerender the routes after we authenticate the user.
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchAuthAndPremiumStatus = async () => {
             try {
-                // Check if the user is logged in
+                //Check if the user is logged in
                 const loginStatus = await checkSpotifyLogin();
                 setIsAuthenticated(loginStatus);
-                console.log("Login status: ", loginStatus);
+                //console.log("Login status: ", loginStatus);
 
+                //If the user is logged in (following OAuth flow for Spotify)
                 if (loginStatus) {
-                    // If logged in, check if the user has premium
+                    //Call method from services to see if user has premium
                     const premiumStatus = await isPremium();
-                    setIsPremiumUser(premiumStatus); // Ensure safe handling of premiumStatus
-                    console.log("Premium Status: " + premiumStatus)
+                    //Change the status
+                    setIsPremiumUser(premiumStatus);
+                    //console.log("Premium Status: " + premiumStatus)
                 }
             } catch (error) {
                 console.error('Error fetching authentication or premium status:', error);
@@ -30,14 +36,14 @@ function App() {
                 console.log("Loading state: false");
             }   
         };
-
         fetchAuthAndPremiumStatus();
     }, []);
 
     return (
         <Router>
             {loading ? (
-                <div>Loading...</div>  // Show loading screen until data is ready
+                // Show loading screen until data is ready until I change it to the logo running
+                <div>Loading...</div>
             ) : (
                 <>
                     <Navbar isAuthenticated={isAuthenticated} isPremium={isPremiumUser} />
@@ -48,5 +54,4 @@ function App() {
     );
 
 }
-
 export default App;

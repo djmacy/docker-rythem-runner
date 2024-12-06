@@ -6,14 +6,18 @@ import Playlists from "./components/pages/Playlists";
 import LikedSongs from "./components/pages/LikedSongs";
 import ProtectedRoute from './ProtectedRoute';
 import SpotifyCallback from './components/pages/SpotifyCallback';
+
 const RoutesComponent = ({ isAuthenticated, isPremium, loading }) => {
+    //If loading return loading so that it rerenders. Loading is coming from App.js check to see if user is
+    //logged in to spotify. Loading is set to true while the api call is made and then once we have a return
+    //we can set to false
     if (loading) {
         return <div>Loading...</div>;
     }
 
-    console.log('Routes - isAuthenticated: ' + isAuthenticated);
-    console.log('Routes - isPremium: ' + isPremium);
-    console.log('Routes - loading: ' + loading);
+    // console.log('Routes - isAuthenticated: ' + isAuthenticated);
+    // console.log('Routes - isPremium: ' + isPremium);
+    // console.log('Routes - loading: ' + loading);
 
     return (
         <Routes>

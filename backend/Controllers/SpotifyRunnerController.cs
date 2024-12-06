@@ -158,29 +158,29 @@ namespace spotifyRunnerApp.Controllers
         }
 
         [HttpGet("isPremium")]
-public async Task<IActionResult> isPremium()
-{
-    string username = HttpContext.Session.GetString("UserId");
-    if (username == null)
-    {
-        return BadRequest(new { error = "No username provided" });
-    }
+        public async Task<IActionResult> isPremium()
+        {
+            string username = HttpContext.Session.GetString("UserId");
+            if (username == null)
+            {
+                return BadRequest(new { error = "No username provided" });
+            }
 
-    string accessToken = await _userService.GetAccessTokenByUsername(username);
-    if (string.IsNullOrEmpty(accessToken))
-    {
-        return Unauthorized(new { error = "AccessToken is missing or invalid" });
-    }
+            string accessToken = await _userService.GetAccessTokenByUsername(username);
+            if (string.IsNullOrEmpty(accessToken))
+            {
+                return Unauthorized(new { error = "AccessToken is missing or invalid" });
+            }
 
-    var isPremiumResponse = await _spotifyAPIService.GetUserProfile(accessToken);
-    if (isPremiumResponse == null)
-    {
-        return BadRequest(new { error = "No profile found" });
-    }
+            var isPremiumResponse = await _spotifyAPIService.GetUserProfile(accessToken);
+            if (isPremiumResponse == null)
+            {
+                return BadRequest(new { error = "No profile found" });
+            }
 
-    // Return JSON object instead of plain string
-    return Ok(new { product = isPremiumResponse.Product });
-}
+            // Return JSON object instead of plain string
+            return Ok(new { product = isPremiumResponse.Product });
+        }
 
 
 

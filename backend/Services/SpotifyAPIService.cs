@@ -107,44 +107,6 @@ namespace SpotifyRunnerApp.Services
             return playlist;
         }
 
-        public async Task<String> QueueSongs(List<AudioFeature> tempos, string accessToken, float duration)
-        {
-            if (string.IsNullOrEmpty(accessToken))
-            {
-                throw new Exception("No AccessToken provided");
-            }
-            //Keep tracks of the minutes queued so that we can exit once we reach the limit.
-            float currentDuration = 0;
-            //1000 milleseconds in a second
-            float msToS = 1000;
-            //60 seconds in a minute
-            float sToMin = 60;
-            // Iterate over each song in the list
-            foreach (var song in tempos)
-            {
-                // Construct the URI with the song's id
-                string uri = song.Uri;
-                string url = $"https://api.spotify.com/v1/me/player/queue?uri={Uri.EscapeDataString(uri)}";
-
-                var request = new HttpRequestMessage(HttpMethod.Post, url);
-                request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
-
-                var response = await _httpClient.SendAsync(request);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Failed to add song {song.Id} to the queue: {response.ReasonPhrase}");
-                }
-                //convert the duration to minutes and add to currentDuration
-                currentDuration += (song.MsDuration / msToS / sToMin);
-                if (currentDuration > duration)
-                {
-                    return string.Format("{0:N2}", currentDuration);
-                }
-            }
-            return string.Format("{0:N2}", currentDuration);
-        }
-
         public async Task<QueueResponse> QueueDemoPlaylist(List<string> uris, string accessToken, string deviceId = null)
         {
             if (string.IsNullOrEmpty(accessToken))

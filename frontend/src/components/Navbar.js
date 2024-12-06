@@ -4,17 +4,19 @@ import logo from "../images/spotifyRunnerLogo.png";
 import './Navbar.css';
 
 const Navbar = ({ isAuthenticated }) => {
+    //use this hook to know when to add some background color to the navbar since it is transparent on load.
     const [isScrolled, setIsScrolled] = useState(false);
 
+    //set the event listener onLoad
     useEffect(() => {
         const handleScroll = () => {
-            // Set isScrolled to true if the user scrolls more than 50px down
+            //set isScrolled to true if the user scrolls more than 50px down
             setIsScrolled(window.scrollY > 50);
         };
 
         window.addEventListener('scroll', handleScroll);
 
-        // Cleanup the event listener when the component unmounts
+        //cleanup the event listener when the component unmounts
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };

@@ -8,41 +8,61 @@ import ModalDevices from "../ModalDevices";
 import ModalQueue from "../ModalQueue";
 
 const LikedSongs = () => {
+    //used to manage the state of the slider
     const [minBpm, setMinBpm] = useState(165);
+    //used to know which songs to send over to my backend for filtering
     const [songs, setSongs] = useState([]);
+    //used to keep track of available devices for queue process
     const [devices, setDevices] = useState([]);
+    //songs that have been filtered to the desired bpm range
     const [filteredSongs, setFilteredSongs] = useState([]);
+    //lets us know if the songs have been filtered. If true enable the queue button below
     const [isFiltered, setIsFiltered] = useState(false);
+    //if loading show the animation
     const [isLoading, setIsLoading] = useState(false);
+    //if true the user can click on the queue button
     const [canQueue, setCanQueue] = useState(false);
+    //if true the user can filter music again. Just here to prevent the user from accidentally clicking on filter
+    //after they have just filtered the music for UX
     const [canFilter, setCanFilter] = useState(true);
+    //conditionally renders text on the page letting the user know that we are currently getting their liked songs.
+    //depending on the number of songs could be anywhere from 1-10 sec.
     const [loadingLikedSongs, setLoadingLikedSongs] = useState(false);
-    // State to manage the "still loading" message
+    // State to manage the "still loading" message if still retrieving songs after 5 sec
     const [stillLoading, setStillLoading] = useState(false);
-    const loadingRef = useRef(false); // Declare the ref at the top level
+    //used to make sure change is not asynchronous. Sometimes states are not changed immediately and we need to know
+    //for the process where we get the liked songs
+    const loadingRef = useRef(false);
+    //used to conditionally show the modal for devices
     const [isModalOpen, setIsModalOpen] = useState(false);
+    //used to conditionally show the modal after queue is finished
     const [isModalQueueOpen, setIsModalQueueOpen] = useState(false);
+    //let us know if we had success or failure
     const [queueResponse, setQueueResponse] = useState(null);
+    const increment = 10;
 
-
+    //used on load to fetch liked songs from the user
     useEffect(() => {
-
+        //define the loadingTimeout outside of the try so that we can call it in the finally as well
         let loadingTimeout;
-
         const fetchSongs = async () => {
             try {
+                //I tried both but could only get it to work with the ref. Might have to delete the useState
                 setLoadingLikedSongs(true);
-                loadingRef.current = true; // Update the ref immediately
+                loadingRef.current = true;
 
                 // Set a timeout to change the message after 5 seconds if still loading
                 loadingTimeout = setTimeout(() => {
-                    if (loadingRef.current) { // Check the ref instead of the state
-                        setStillLoading(true); // Set a flag to indicate it's still loading
+                    // Check the ref instead of the state
+                    if (loadingRef.current) {
+                        //Set a flag to indicate it's still loading. This will trigger the other text to show
+                        setStillLoading(true);
                     }
-                }, 6000); // 5 seconds
+                    //6 sec
+                }, 6000);
 
                 const likedSongs = await getLikedSongs();
-                console.log(likedSongs);
+                //console.log(likedSongs);
                 if (likedSongs) {
                     const formattedSongs = likedSongs.map(item => ({
                         id: item.track.id,
@@ -88,16 +108,18 @@ const LikedSongs = () => {
         }
     };
 
-
-
+    //once the slider changes we need to adjust the new value in increments of 10
     const handleSliderChange = (event) => {
-        setMinBpm(parseInt(event.target.value, 10));
+        setMinBpm(parseInt(event.target.value, increment));
         setCanFilter(true);
     };
 
+    //This method will call the service which will filter the songs based on the songs selected
     const filterSongs = async () => {
-        const lowerBound = minBpm; // Example lower bound for tempo
-        const upperBound = parseInt(minBpm) + 10; // Example upper bound for tempo
+        // lower bound for tempo
+        const lowerBound = minBpm;
+        // just add 10 to the lower bound and we get the upper bound
+        const upperBound = parseInt(minBpm) + increment;
         try {
             setIsLoading(true);
 
@@ -126,12 +148,11 @@ const LikedSongs = () => {
                         uri: feature.uri,
                     };
                 });
-
             //console.log(mergedSongs);
             setFilteredSongs(mergedSongs);
             fetchDevices();
         } catch (error) {
-           // console.error('Filter failed:', error);
+            console.error('Filter failed:', error);
         } finally {
             setIsFiltered(true);
             setCanFilter(false);
@@ -139,13 +160,15 @@ const LikedSongs = () => {
         }
     };
 
-
+    //Call the service to queue the filtered songs
     const queueSongs = async () => {
         try {
+            //if there are no devices just return early
             fetchDevices();
             if (!canQueue) {
                 return;
             }
+            //load the animation
             setIsLoading(true);
             const uris = filteredSongs.map((song) => song.uri);
             const deviceId = devices.devices[0]?.id;
@@ -158,21 +181,24 @@ const LikedSongs = () => {
             const result = await queuePlaylist(uris, deviceId);
             setQueueResponse(result);
             //setResponse(result);
-            console.log(result);
+          // console.log(result);
         } catch (error) {
-            console.log(`Failed to queue songs: ${error.message}`);
+            console.error(`Failed to queue songs: ${error.message}`);
         } finally {
             setIsLoading(false);
             if (canQueue) {
-                setIsModalQueueOpen(true); // Ensure the modal opens in case of an error
+                // Ensure the modal opens in case of an error
+                setIsModalQueueOpen(true);
             }
         }
     };
 
+    //update the filtered songs if the user chose to remove a song from the list
     const handleRemoveSong = (indexToRemove) => {
         setFilteredSongs((prevSongs) => prevSongs.filter((_, index) => index !== indexToRemove));
     };
 
+    //reOrder the queue based on how the user orders the list of songs
     const handleDragEnd = (result) => {
         if (!result.destination) return; // If dropped outside the list, do nothing
 
@@ -181,7 +207,7 @@ const LikedSongs = () => {
         updatedSongs.splice(result.destination.index, 0, reorderedSong);
 
         setFilteredSongs(updatedSongs);
-        console.log(filteredSongs);
+        //console.log(filteredSongs);
     };
 
     const formatDuration = (durationMs) => {
@@ -208,7 +234,7 @@ const LikedSongs = () => {
                     className="liked-slider"
                 />
                 <div className="liked-bpm-value">
-                    {minBpm}-{minBpm + 10}
+                    {minBpm}-{minBpm + increment}
                 </div>
             </div>
 

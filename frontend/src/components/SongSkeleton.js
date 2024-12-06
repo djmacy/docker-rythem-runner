@@ -1,6 +1,7 @@
 import React from 'react';
 import './SongSkeleton.css';
 
+//Just use this to create skeleton css while the screen loads the playlists and liked songs for UX
 const SongSkeleton = () => (
     <div className="liked-skeleton-container">
         <div className="liked-skeleton-image"></div>

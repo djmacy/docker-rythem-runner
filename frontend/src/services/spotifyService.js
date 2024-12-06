@@ -1,7 +1,10 @@
-import playlists from "../components/pages/Playlists";
-
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
+/**
+ * Test script to see if backend is connected. Used for debugging
+ * @returns {Promise<any|null>} Json from the backend with information on today's date.
+ *  message, timestamp
+ */
 export const getTestJson = async () => {
     try {
         const response = await fetch(`${API_BASE_URL}/spotifyRunner/testjson`);
@@ -11,9 +14,16 @@ export const getTestJson = async () => {
         return await response.json();
     } catch (error) {
         console.error("Error fetching test JSON:", error);
+        return null;
     }
 };
 
+/**
+ * Calls the backend to see what available devices are currently connected to spotify.
+ * @returns {Promise<any|null>} Json with the available devices.
+ * devices : [Devices]
+ * Devices = { id, type, name}
+ */
 export const getDevices = async () => {
   try {
       const response = await fetch(`${API_BASE_URL}/spotifyRunner/getDevices`, {
@@ -27,14 +37,22 @@ export const getDevices = async () => {
       return await response.json();
   }  catch (error) {
       console.error("Error fetching devices", error);
-      return null; // Return null in case of error
+      return null;
   }
 };
 
+/**
+ * Redirects the user to start the Spotify OAuth flow
+ */
 export const login = () => {
     window.location.href = `${API_BASE_URL}/spotifyRunner/login`;
 };
 
+/**
+ * This is used to see if the user is currently authenticated with Spotify
+ * @returns {Promise<any>} returns true or false depending on whether the user has a stored session on the
+ * backend or not.
+ */
 export const checkSpotifyLogin = async () => {
     try {
         const response = await fetch(`${API_BASE_URL}/spotifyRunner/isSpotifyLoggedIn` , {
@@ -48,9 +66,14 @@ export const checkSpotifyLogin = async () => {
         return isLoggedIn;
     } catch (error) {
         console.error("Error checking Spotify login login: " + error);
+        return null;
     }
 };
 
+/**
+ * This is used to see if the user is a premium Spotify member
+ * @returns {Promise<boolean>} returns a true or false based on the product key in the Json response.
+ */
 export const isPremium = async () => {
     try {
         const response = await fetch(`${API_BASE_URL}/spotifyRunner/isPremium`, {
@@ -60,13 +83,23 @@ export const isPremium = async () => {
         if (!response.ok) {
             throw new Error(`Error: ${response.statusText}`);
         }
-        const { product } = await response.json(); // Destructure 'product' from JSON response
-        return product === 'premium'; // Return true if the user is premium
+        //Destructure 'product' from JSON response
+        const { product } = await response.json();
+        //Return true if the user is premium
+        return product === 'premium';
     } catch (error) {
         console.error("Error checking to see if user has premium: " + error);
+        return null;
     }
 };
 
+/**
+ * This service gets a list of the users playlists
+ * @returns {Promise<any>} returns a list of PlaylistItems in Json.
+ * { [PlaylistItems] }
+ * PlaylistsItems = { id, name, uri, images, items, tracks, PlaylistTrack }
+ * PlaylistTrack = { total }
+ */
 export const getUserPlaylist = async () => {
     try {
         const response = await fetch(`${API_BASE_URL}/spotifyRunner/playlists`, {
@@ -76,13 +109,23 @@ export const getUserPlaylist = async () => {
         if (!response.ok) {
             throw new Error(`Error: ${response.statusText}`);
         }
-        const playlistResponse = await response.json();
-        return playlistResponse;
+        return await response.json();
     } catch (error) {
         console.error("Error getting user playlist: " + error);
+        return null;
     }
 };
 
+/**
+ * This gets the users liked songs
+ * @returns {Promise<any|null>} returns a list of SongItems in Json
+ * { SongItems }
+ * SongItems = { [tracks] }
+ * Track = { id, name, duration_ms, [Artist], Album, uri}
+ * Artist = { name, id }
+ * Album = { id, [Images] }
+ * Images = url
+ */
 export const getLikedSongs = async () => {
     try {
         const response = await fetch(`${API_BASE_URL}/spotifyRunner/mylikedsongs`, {
@@ -92,13 +135,22 @@ export const getLikedSongs = async () => {
         if (!response.ok) {
             throw new Error(`Error: ${response.statusText}`);
         }
-        const getLikedSongsResponse = await response.json();
-        return getLikedSongsResponse;
+        return await response.json();
     } catch (error) {
         console.error("Error getting liked songs: " + error);
+        return null;
     }
 };
 
+/**
+ * Returns the songs associated with the pre-made pop playlists all filtered to 180 bpm in the DemoPlaylists
+ * @returns {Promise<any>} returns a list of songs along with playlist details in Json
+ * { id, name, uri, [Tracks] }
+ * Track = { id, name, duration_ms, [Artist], Album, uri}
+ * Artist = { name, id }
+ * Album = { id, [Images] }
+ * Images = url
+ */
 export const getPopPlaylist = async () => {
     try {
         const response = await fetch(`${API_BASE_URL}/spotifyRunner/popPlaylist`, {
@@ -108,13 +160,22 @@ export const getPopPlaylist = async () => {
         if (!response.ok) {
             throw new Error(`Error: ${response.statusText}`);
         }
-        const popPlaylist = await response.json();
-        return popPlaylist;
+        return await response.json();
     } catch (error) {
         console.error(`Error getting pop playlist: ${error}`);
+        return null;
     }
 }
 
+/**
+ * Returns the songs associated with the pre-made rock playlists all filtered to 180 bpm in the DemoPlaylists
+ * @returns {Promise<any>} returns a list of songs along with playlist details in Json
+ * { id, name, uri, [Tracks] }
+ * Track = { id, name, duration_ms, [Artist], Album, uri}
+ * Artist = { name, id }
+ * Album = { id, [Images] }
+ * Images = url
+ */
 export const getRockPlaylist = async() => {
     try {
         const response = await fetch(`${API_BASE_URL}/spotifyRunner/rockPlaylist`, {
@@ -124,13 +185,22 @@ export const getRockPlaylist = async() => {
         if (!response.ok) {
             throw new Error(`Error: ${response.statusText}`);
         }
-        const rockPlaylist = await response.json();
-        return rockPlaylist;
+        return await response.json();
     } catch(error) {
         console.error(`Error getting rock playlist: ${error}`);
+        return null;
     }
 };
 
+/**
+ * Returns the songs associated with the pre-made rock playlists all filtered to 180 bpm in the DemoPlaylists
+ * @returns {Promise<any>} returns a list of songs along with playlist details in Json
+ * { id, name, uri, [Tracks] }
+ * Track = { id, name, duration_ms, [Artist], Album, uri}
+ * Artist = { name, id }
+ * Album = { id, [Images] }
+ * Images = url
+ */
 export const getHipHopPlaylist = async () => {
     try {
         const response = await fetch(`${API_BASE_URL}/spotifyRunner/hipHopPlaylist`, {
@@ -140,13 +210,19 @@ export const getHipHopPlaylist = async () => {
         if (!response.ok) {
             throw new Error(`Error: ${response.statusText}`);
         }
-        const hipHopPlaylist = await response.json();
-        return hipHopPlaylist;
+        return await response.json();
     } catch(error) {
         console.error(`Error getting HipHop playlist: ${error}`);
     }
 }
 
+/**
+ * Post request made to the backend to queue the selected songs on a specified device using the tracks uris.
+ * @param uris - unique to each song, this is how Spotify knows what songs to queue.
+ * @param deviceId - device that is currently active and can accept request from Spotify.
+ * @returns {Promise<any>} Returns the number of successful and failed queues.
+ * { TotalQueued, Failed }
+ */
 export const queuePlaylist = async (uris, deviceId) => {
     try {
         const response = await fetch(`${API_BASE_URL}/spotifyRunner/queuePlaylist`, {
@@ -168,6 +244,15 @@ export const queuePlaylist = async (uris, deviceId) => {
     }
 }
 
+/**
+ * This service will get the songs in a give bpm range given a list of songs
+ * @param playlists list of song ids
+ * @param lowerBound lower bound of the bpm
+ * @param upperBound upper bound of bpm
+ * @returns {Promise<any>} List songs that fall in the desired range of bpm
+ * { AudioFeatures, MetaData }
+ * AudioFeatures has bpm while metadata has info to connect back to the song we have stored on the frontend
+ */
 export const getSongsFromPlaylists = async (playlists, lowerBound, upperBound) => {
     try {
         const body = {
@@ -195,6 +280,15 @@ export const getSongsFromPlaylists = async (playlists, lowerBound, upperBound) =
     }
 }
 
+/**
+ * This service will get the songs in a give bpm range given a list of songs
+ * @param songIds list of song ids
+ * @param lowerBound lower bound of the bpm
+ * @param upperBound upper bound of bpm
+ * @returns {Promise<any>} List songs that fall in the desired range of bpm
+ * { AudioFeatures, MetaData }
+ * AudioFeatures has bpm while metadata has info to connect back to the song we have stored on the frontend
+ */
 export const getFilteredLikedSongs = async (songIds, lowerBound, upperBound) => {
     try {
         const body = {
@@ -221,22 +315,3 @@ export const getFilteredLikedSongs = async (songIds, lowerBound, upperBound) => 
         throw new Error(`Error getting filtered songs: ${error}`);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

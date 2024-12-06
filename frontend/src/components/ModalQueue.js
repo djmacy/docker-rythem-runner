@@ -4,27 +4,28 @@ import './Modal.css';
 const ModalQueue = ({isOpen, onClose, totalQueued}) => {
 
     useEffect(() => {
-        if (!isOpen) return; // Don't add the event listener if modal is not open
-
+        //don't add the event listener if modal is not open
+        if (!isOpen) return;
+        //define event handler which will close the modal if clicked outside of the modal
         const handleClickOutside = (event) => {
             const modalContainer = document.querySelector('.modal-container');
             const modalOverlay = document.querySelector('.modal-overlay');
-
+            //close the modal if we click outside of it
             if (modalOverlay && !modalContainer.contains(event.target)) {
                 onClose();
             }
         };
 
-        // Add event listener when modal is open
+        //add event listener when modal is open
         document.addEventListener('mousedown', handleClickOutside);
 
-        // Cleanup on component unmount or when modal is closed
+        //cleanup on component unmount or when modal is closed
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [isOpen, onClose]);
 
-    // If the modal is not open, return null (nothing is rendered)
+    //if the modal is not open, return null (nothing is rendered)
     if (!isOpen) {
         return null;
     }
