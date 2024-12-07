@@ -419,15 +419,18 @@ namespace SpotifyRunnerApp.Services
                 { "scope", scope },
                 { "redirect_uri", redirectUri },
                 { "state", state },
-		{ "show_dialog", "true"}
+		        { "show_dialog", "true"}
             };
 
             string queryString = QueryStringFromDictionary(queryParams);
+            Console.WriteLine($"https://accounts.spotify.com/authorize?{queryString}");
             return $"https://accounts.spotify.com/authorize?{queryString}";
         }
         private static string QueryStringFromDictionary(Dictionary<string, string> queryParams)
         {
-            return string.Join("&", queryParams.Select(kvp => $"{kvp.Key}={HttpUtility.UrlEncode(kvp.Value)}"));
+            var url = string.Join("&", queryParams.Select(kvp => $"{kvp.Key}={Uri.EscapeDataString(kvp.Value)}"));
+            Console.WriteLine(url);
+            return url;
         }
     }
 }
