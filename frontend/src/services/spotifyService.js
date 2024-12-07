@@ -45,6 +45,13 @@ export const getDevices = async () => {
  * Redirects the user to start the Spotify OAuth flow
  */
 export const login = () => {
+    //clear cookies
+    document.cookie.split(";").forEach(cookie => {
+        document.cookie = cookie
+            .replace(/^ +/, "")
+            .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+
     window.location.href = `${API_BASE_URL}/spotifyRunner/login`;
 };
 

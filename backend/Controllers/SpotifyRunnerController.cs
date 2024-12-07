@@ -47,6 +47,17 @@ namespace spotifyRunnerApp.Controllers
         [HttpGet("login")]
         public IActionResult Login()
         {
+            //clear cookies before redirecting
+            // Clear cookies (optional)
+            //foreach (var cookie in Request.Cookies.Keys)
+            //{
+            //    Response.Cookies.Append(cookie, "", new CookieOptions
+            //    {
+            //        Expires = DateTimeOffset.UtcNow.AddDays(-1),
+            //        HttpOnly = true,
+            //        Secure = true
+            //    });
+            //}
             string clientId = GetConfigValue("Spotify:ClientId");
             //Is used to redirect the user back to our site. Spotify has to know what this is as well and is set up in dev dashboard for spotify.
             string redirectUri = GetConfigValue("Spotify:RedirectUri");
