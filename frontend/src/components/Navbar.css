@@ -77,3 +77,177 @@
     font-size: 2.0rem;
     line-height: 1;
 }
+
+.burger-menu {
+    position: absolute; /* Position the menu relative to the navbar */
+    top: 0;
+    right: 1rem; /* Adjust spacing from the right edge */
+    width: 4em;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Align burger bars to the right */
+    justify-content: space-evenly; /* Space bars evenly */
+    cursor: pointer;
+    margin-right: 3rem;
+}
+
+
+.burger-bar {
+    margin-right: 10px;
+    width: 4em;
+    height: 0.5em;
+    background-color: white;
+    border-radius: 0.5em;
+}
+
+.menu {
+    width: 40%; /* Adjust width as needed */
+    height: 100vh;
+    background-color: #2d6a4f;
+    position: fixed;
+    top: 0;
+    left: -100%; /* Start off-screen to the left */
+    z-index: 1;
+    transition: left 0.5s ease-in-out; /* Smooth transition using 'left' */
+    display: flex; /* Add flex to make child centering effective */
+    justify-content: center; /* Center child elements horizontally */
+}
+
+.menu.visible {
+    left: 0; /* Slide in to be visible */
+}
+
+.menu.hidden {
+    left: -100%; /* Off-screen to the left */
+}
+
+.menu-centered {
+    display: flex;
+    flex-direction: column; /* Stack links vertically */
+    align-items: center;    /* Center horizontally */
+    justify-content: flex-start; /* Center vertically */
+    padding-top: 2rem;
+    height: 100%; /* Full height of the menu */
+    gap: 2rem; /* Spacing between links */
+    text-align: center; /* Center text inside the links */
+}
+
+.menu-centered a {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-align: center;
+}
+
+.menu-centered a:hover {
+    background-color: #FFD700;
+    color: black;
+}
+
+
+
+@keyframes slideInRight {
+    from {
+        left: 100%; /* Start off-screen */
+    }
+    to {
+        left: 0%; /* End at 60% (or adjust as needed for alignment) */
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        left: 0%; /* Start at visible position */
+    }
+    to {
+        left: 100%; /* End off-screen */
+    }
+}
+
+.hidden {
+    /*display: none;*/
+    left: 100%; /* Off-screen to the right */
+    animation: slideInLeft 0.5s forwards;
+
+}
+
+.visible {
+    /* left: 60%; /* Adjust as needed for the visible position */
+    display: inherit;
+    animation: slideInRight 0.5s forwards; /* Apply animation */
+    /*background: rgba(255, 255, 255, 0.5); !* Semi-transparent white background */
+    /* backdrop-filter: blur(8px); !* Apply blur effect */
+}
+
+/*.visible ul {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    align-items: flex-start;*/
+/*    justify-content: space-between;*/
+/*    z-index: 1;*/
+/*    margin-top: 100px;*/
+/*}*/
+
+/*.visible li {*/
+/*    margin: 10px;*/
+/*    font-size: 30px;*/
+/*    font-family: "Caveat", cursive;*/
+/*    !*display: inherit;*!*/
+/*}*/
+
+/*.visible a {*/
+/*    color: white;*/
+/*    text-decoration: none;*/
+/*}*/
+
+.burger-bar.clicked:nth-child(1) {
+    transform: rotate(45deg) translate(0.6em, 1.25em);
+    transition: ease-out 0.5s;
+}
+
+.burger-bar.clicked:nth-child(2) {
+    transform: scale(0.01);
+    transition: ease-out 0.5s;
+}
+
+.burger-bar.clicked:nth-child(3) {
+    transform: rotate(135deg) translate(-0.25em, 1em);
+    transition: ease-out 0.5s;
+}
+
+.burger-bar:nth-child(1) {
+    margin-top: 26px;
+}
+
+.burger-bar:nth-child(3) {
+    margin-bottom: 26px;
+}
+
+.burger-bar.unclicked {
+    transform: rotate(0) translate(0);
+    transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s;
+}
+
+@media only screen and (max-width: 768px) {
+    .burger-menu {
+        position: absolute;
+        top: 0;
+        right: 1rem;
+        width: 3em;
+    }
+    .burger-bar {
+        width: 100%;
+    }
+    .menu-centered a {
+        padding: 0.5rem 0; /* Adjusted padding for equal height */
+        width: 125px; /* Set a fixed width */
+        min-width: 125px;
+    }
+}

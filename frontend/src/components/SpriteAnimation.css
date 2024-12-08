@@ -3,10 +3,7 @@
     height:384px;
     overflow:hidden;
     position:relative;
-   /* background-image: url('../images/cover.PNG'); Set the background image */
-   /* background-size: 150px 175px; Adjust size if necessary */
-   /* background-position: 340px 100px; Adjust positioning if needed */
-   /* background-repeat: no-repeat;  Ensure the background doesn't repeat */
+    align-items: center;
 }
 /*spreadsheet-icon*/
 .sprite-animation {
@@ -19,6 +16,42 @@
     animation-duration: 2.5s;
     animation-iteration-count: infinite;
     animation-timing-function: steps(1, end);
+}
+
+@media only screen and (max-width: 600px) {
+    .sprite-container {
+        width: 100%;
+        /* transform-origin: top left; /* Ensures scaling from the top-left corner */
+    }
+
+    .sprite-animation {
+        transform: scale(0.8) ;/* Adjust scale factor as needed */
+        transform-origin: center;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .sprite-container {
+        width: 100%;
+        /* transform-origin: top left; /* Ensures scaling from the top-left corner */
+    }
+
+    .sprite-animation {
+        transform: scale(0.5) translate(-20%, -50%); /* Adjust scale factor as needed */
+        transform-origin: center center;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .sprite-container {
+        width: 100%;
+        /* transform-origin: top left; /* Ensures scaling from the top-left corner */
+    }
+
+    .sprite-animation {
+        transform: scale(0.4) translate(-35%, -50%); /* Adjust scale factor as needed */
+        transform-origin: center center;
+    }
 }
 
 @keyframes sprite-animation {

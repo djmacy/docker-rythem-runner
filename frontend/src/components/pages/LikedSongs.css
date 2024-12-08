@@ -173,6 +173,44 @@
 }
 
 .liked-remove-song-btn:hover {
-  /*  transform: scale(1.2); /* Slight zoom effect on hover */
+    /*  transform: scale(1.2); /* Slight zoom effect on hover */
     background: #ff7875;
+}
+
+@media only screen and (max-width: 768px) {
+
+    .liked-songs-container {
+        padding: 0.5rem;
+    }
+
+    .liked-btn {
+        font-size: 1.0rem;
+    }
+
+    .liked-title {
+        font-size: 2.0rem;
+        margin-top: 30px;
+    }
+
+    /* Scrollable song list container */
+    .liked-song-list {
+        width: 100%; /* Take full width of the parent container */
+        padding: 0.25rem; /* Add padding for spacing */
+        box-sizing: border-box; /* Include padding in width/height */
+    }
+
+    .liked-song-title {
+        font-size: 0.9rem;
+    }
+
+    .liked-song-artist {
+        font-size: 0.8rem;
+    }
+
+    /* Individual song item */
+    .liked-song-duration {
+        font-size: 0.9rem;
+        margin-left: 5px;
+        font-weight: bold;
+    }
 }

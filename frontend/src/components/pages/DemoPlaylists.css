@@ -76,7 +76,7 @@
 /* Scrollable song list container */
 .song-list {
     padding: 1rem; /* Add padding for better layout */
-   /* overflow-y: auto;*/
+    /* overflow-y: auto;*/
 }
 
 /*!* Scrollbar styling (unchanged) *!*/
@@ -177,4 +177,10 @@
     overflow: hidden;
     height: 100vh;
     width: 100vw;
+}
+
+@media only screen and (max-width: 768px) {
+    .sidebar.open {
+        width: 75vw;
+    }
 }

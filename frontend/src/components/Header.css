@@ -12,7 +12,7 @@
 }
 
 .banner {
-   /* position: relative;*/
+    /* position: relative;*/
     margin-top: 4rem;
     width: 100%;
     height: 100%;
@@ -35,7 +35,7 @@
 
 .hero-container h1 {
     opacity: 0;
-  /*  transform: translateX(100%); /* Start from the right for text-run */
+    /*  transform: translateX(100%); /* Start from the right for text-run */
     /*animation: slideIn 1s ease-out forwards;*/
 }
 
@@ -140,8 +140,8 @@
     font-weight: bold;
     color: #ffffff;
     margin-top: 0.5rem;
-   /* background: #282c34;*/
-   /* border-radius: 15px;*/
+    /* background: #282c34;*/
+    /* border-radius: 15px;*/
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 1); /* Dark shadow for better visibility */
 }
 
@@ -201,5 +201,43 @@
     100% {
         transform: translateY(0); /* Settle at the final position */
         opacity: 1;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .header {
+        padding: 0;
+        /*margin-left: 0.25rem;*/
+        /*margin-right: 0.25rem;*/
+    }
+
+    .card-container {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: center;
+        /* Adds space between the feature text and the cards */
+        width: 100%;
+        margin: 2rem 0.25rem 1rem;
+    }
+
+    .banner {
+        margin-top: 8rem;
+        margin-bottom: 4rem;
+    }
+
+    .hero-container h1, .hero-container h2 {
+        text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .text-run {
+        font-size: 4.7rem;
+    }
+
+    .text-to-the {
+        font-size: 2.7rem;
+    }
+
+    .text-beat {
+        font-size: 3.9rem;
     }
 }

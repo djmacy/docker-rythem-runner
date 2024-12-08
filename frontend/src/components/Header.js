@@ -1,28 +1,24 @@
 import React, {useState} from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { login, checkSpotifyLogin } from "../services/spotifyService";
 import './Header.css';
+import logo from '../images/spotifyRunnerLogo.png';
 import cardImage from '../images/card1.png';
 import cardImage2 from '../images/card2.png';
 import cardImage3 from '../images/card3.png';
+import cardImage4 from '../images/card4.png';
+import cardImage5 from '../images/card5.png';
 import Modal from "./Modal";
 
 const Header = () => {
     const navigate = useNavigate();
-    //used to open the modal to redirect users to Spotify login
-    const [isModalOpen, setModalOpen] = useState(false);
 
-    //sets the modal to closed once triggered
+    const [isModalOpen, setModalOpen] = useState(false);
     const handleCloseModal = () => setModalOpen(false);
 
-    //
     const handleLogin = async (url) => {
         try {
-            //Calls the service which checks to see if user is logged in. If they are navigate to the correct
-            //route otherwise open up the modal.
             const isLoggedIn = await checkSpotifyLogin();
-            //console.log('Header.js: '+ isLoggedIn);
-            //if they are logged in navigate to route
             if (isLoggedIn) {
                 navigate(url);
             } else {
@@ -33,7 +29,6 @@ const Header = () => {
         }
     };
 
-    //Closes the modal and redirects the user to the Spotify login page for OAuth
     const handleSpotifyLogin = () => {
         setModalOpen(false);
         login();
@@ -53,7 +48,7 @@ const Header = () => {
                 <h2 className="feature-title">Features</h2>
                 <p className="feature-subtext">
                     Whether you're looking for motivation or just want to keep the beat,
-                    Rythem Runner delivers songs that match your running cadence
+                    Rythem Runner delivers songs that match your running cadence.
                 </p>
             </div>
             <div className="card-container">
