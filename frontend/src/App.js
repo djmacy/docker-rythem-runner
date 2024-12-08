@@ -34,7 +34,7 @@ function App() {
                 console.error('Error fetching authentication or premium status:', error);
             } finally {
                 setLoading(false);
-                console.log("Loading state: false");
+               // console.log("Loading state: false");
             }   
         };
         fetchAuthAndPremiumStatus();

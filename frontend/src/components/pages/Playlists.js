@@ -393,6 +393,7 @@ const Playlists = () => {
             {loading && (
                 <div className="loading-overlay">
                     <SpriteAnimation/> {/* Render the SpriteAnimation here */}
+                    <h2>Queueing Songs</h2>
                 </div>
             )}
             <ModalDevices isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />

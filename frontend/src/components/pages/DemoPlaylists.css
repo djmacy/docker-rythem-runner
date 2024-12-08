@@ -171,12 +171,17 @@
     background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent overlay */
     display: flex;
     justify-content: center;
+    flex-direction: column;
     align-items: center;
     z-index: 10; /* Makes sure it's above the button */
     border-radius: 0;
     overflow: hidden;
     height: 100vh;
     width: 100vw;
+}
+
+.loading-overlay h2 {
+    color: white;
 }
 
 @media only screen and (max-width: 768px) {
