@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import SpriteAnimation from "../SpriteAnimation";
 
 const SpotifyCallback = () => {
     const apiUrl = process.env.REACT_APP_API_BASE_URL;
@@ -40,11 +41,17 @@ const SpotifyCallback = () => {
                 navigate('/'); // Redirect to error page if something goes wrong
             }
         };
-
         sendCallbackData();
     }, [apiUrl, navigate]);
 
-    return <div>Processing your request...</div>;
+    return (
+        // Show loading screen until data is ready until I change it to the logo running
+
+        <div className="loading-overlay">
+            <h2>Verifying Account</h2>
+            <SpriteAnimation/> {/* Render the SpriteAnimation here */}
+        </div>
+    );
 };
 
 export default SpotifyCallback;

@@ -1,7 +1,8 @@
 import Header from '../Header';
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {checkSpotifyLogin, isPremium} from '../../services/spotifyService';
 import ModalPremium from "../ModalPremium";
+import SpriteAnimation from "../SpriteAnimation";
 
 const Home = () => {
     //isAuthenticated is used to see if the user is logged in via Spotify OAuth
@@ -58,15 +59,19 @@ const Home = () => {
 
     //if loading return loading text to rerender component
     if(loading) {
-        return <div>Loading...</div>;
+        return (
+            <div className="loading-overlay">
+                <SpriteAnimation/> {/* Render the SpriteAnimation here */}
+            </div>
+        );
     }
 
     //if the user does not have access (ie did not login with credentials above) show them this form otherwise render
     //the home page
-     if (!isAccessGranted && !isAuthenticated) {
+    if (!isAccessGranted && !isAuthenticated) {
         return (
             <div style={{alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}>
-                <h2 style={{marginTop: '100px', color: '#fff'}}>App is still under development.</h2>
+                <h2 style={{marginTop: '100px', color: '#fff'}}>Spotify Staff Login Page</h2>
                 <h2 style={{color: '#fff'}}>Please log in to the test server.</h2>
                 <form onSubmit={handleLogin}>
                     <input

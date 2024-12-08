@@ -6,13 +6,19 @@ import Playlists from "./components/pages/Playlists";
 import LikedSongs from "./components/pages/LikedSongs";
 import ProtectedRoute from './ProtectedRoute';
 import SpotifyCallback from './components/pages/SpotifyCallback';
+import SpriteAnimation from "./components/SpriteAnimation";
 
 const RoutesComponent = ({ isAuthenticated, isPremium, loading }) => {
     //If loading return loading so that it rerenders. Loading is coming from App.js check to see if user is
     //logged in to spotify. Loading is set to true while the api call is made and then once we have a return
     //we can set to false
     if (loading) {
-        return <div>Loading...</div>;
+        return (
+            // Show loading screen until data is ready until I change it to the logo running
+            <div className="loading-overlay">
+                <SpriteAnimation/> {/* Render the SpriteAnimation here */}
+            </div>
+        )
     }
 
     // console.log('Routes - isAuthenticated: ' + isAuthenticated);

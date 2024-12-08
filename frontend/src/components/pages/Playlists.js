@@ -35,7 +35,7 @@ const Playlists = () => {
                 setLoadingPlaylists(true); // Set loading to true before fetching
 
                 const data = await getUserPlaylist();
-                console.log("Fetched playlists data:", data);
+                //console.log("Fetched playlists data:", data);
 
                 if (data && Array.isArray(data)) {
                     // Filter out null or undefined entries
@@ -136,8 +136,8 @@ const Playlists = () => {
 
     const handleFindSongs = async () => {
         if (selectedCards.length > 0) {
-            console.log('pressed');
-            console.log(selectedCards)
+           // console.log('pressed');
+           // console.log(selectedCards)
             //const playlistIds = selectedCards.map((card) => card.id); // Extract the `id` from each selected card
             const lowerBound = minBpm; // Example lower bound for tempo
             const upperBound = parseInt(minBpm) + 10; // Example upper bound for tempo
@@ -146,22 +146,22 @@ const Playlists = () => {
                 setIsSidebarOpen(false);
                 setLoading(true);
                 fetchDevices();
-                console.log(canQueue);
+              //  console.log(canQueue);
                 if (!canQueue) {
                     setLoading(false);
                     return;
                 }
-                console.log('Finding songs with playlists:', selectedCards);
+               // console.log('Finding songs with playlists:', selectedCards);
                 const filteredSongs = await getSongsFromPlaylists(selectedCards, lowerBound, upperBound);
-                console.log('Songs with playlists:', songs);
+              //  console.log('Songs with playlists:', songs);
                 if (filteredSongs.data?.length === 0) {
                     setSongs([]);
-                    console.log(songs.length);
+                  //  console.log(songs.length);
                     setError("No songs found matching the criteria."); // Update state for error message
                 } else {
                     setSongs(filteredSongs);
 
-                    console.log('Fetched songs:', filteredSongs);
+                   // console.log('Fetched songs:', filteredSongs);
                 }
                 setIsSidebarOpen(true);
             } catch (err) {
@@ -181,7 +181,7 @@ const Playlists = () => {
     };
 
     const handleSelect = (id, totalTracks) => {
-        console.log(id + " " + totalTracks);
+       // console.log(id + " " + totalTracks);
 
         setSelectedCards((prevSelected) => {
             if (prevSelected.includes(id)) {
@@ -194,7 +194,7 @@ const Playlists = () => {
                 return [...prevSelected, id];
             }
         });
-        console.log(totalTracksSelected)
+       // console.log(totalTracksSelected)
     };
 
 
@@ -222,7 +222,7 @@ const Playlists = () => {
     };
 
     const handleQueue = async () => {
-        console.log("Queue button clicked");
+        //console.log("Queue button clicked");
 
         try {
             fetchDevices();
@@ -237,12 +237,12 @@ const Playlists = () => {
                 console.error("No device ID found");
                 return; // Handle the case where deviceId is not available
             }
-            console.log('DM: ' + deviceId)
+            //console.log('DM: ' + deviceId)
             console.log(uris)
             const result = await queuePlaylist(uris, deviceId);
             setQueueResponse(result);
             //setResponse(result);
-            console.log(result);
+           // console.log(result);
         } catch (error) {
             console.log(`Failed to queue songs: ${error.message}`);
         } finally {
@@ -266,7 +266,7 @@ const Playlists = () => {
         updatedSongs.splice(result.destination.index, 0, reorderedSong);
 
         setSongs(updatedSongs);
-        console.log(songs);
+      //  console.log(songs);
     };
 
     return (

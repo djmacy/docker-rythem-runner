@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import Navbar from "./components/Navbar";
 import RoutesComponent from "./Routes";
 import {checkSpotifyLogin, isPremium} from './services/spotifyService';
+import SpriteAnimation from "./components/SpriteAnimation";
 
 function App() {
     //This is used to see if the user is logged in to spotify.
@@ -43,7 +44,9 @@ function App() {
         <Router>
             {loading ? (
                 // Show loading screen until data is ready until I change it to the logo running
-                <div>Loading...</div>
+                    <div className="loading-overlay">
+                        <SpriteAnimation/> {/* Render the SpriteAnimation here */}
+                    </div>
             ) : (
                 <>
                     <Navbar isAuthenticated={isAuthenticated} isPremium={isPremiumUser} />
