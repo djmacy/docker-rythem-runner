@@ -179,6 +179,20 @@
 
 @media only screen and (max-width: 768px) {
 
+    .liked-songs-page {
+        padding: 0.75rem;
+        background-color: #41a386;
+        border-radius: 1rem;
+        width: 80%; /* Ensure it stretches within its parent container */
+        /* max-width: 1200px; /* Matches the grid's max-width for consistency */
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Centers all child content */
+        justify-content: center;
+        margin: 1rem auto; /* Center the entire playlists-page block */
+        /*border: 1px dashed blue;*/
+    }
+
     .liked-songs-container {
         padding: 0.5rem;
     }
@@ -197,6 +211,16 @@
         width: 100%; /* Take full width of the parent container */
         padding: 0.25rem; /* Add padding for spacing */
         box-sizing: border-box; /* Include padding in width/height */
+    }
+
+    /* Song details container */
+    .liked-song-details {
+        margin-left: 0.1rem; /* Add space between image and details */
+    }
+
+    /* Image styling */
+    .liked-song-image {
+        margin-right: 0.3rem; /* Space between image and details */
     }
 
     .liked-song-title {
