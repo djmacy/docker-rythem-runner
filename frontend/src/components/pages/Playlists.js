@@ -288,7 +288,7 @@ const Playlists = () => {
             </div>
 
             <div className="playlists-page">
-                <img src="/full-logo-framed.svg" style={{marginBottom:"-280px"}} alt="Spotify Logo"/>
+                <img src="/full-logo-framed.svg" className="spotify-logo" alt="Spotify Logo"/>
 
                 <h1 className="playlists-title">Your Playlists</h1>
                 <input
