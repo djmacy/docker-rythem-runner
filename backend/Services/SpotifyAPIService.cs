@@ -23,19 +23,6 @@ namespace SpotifyRunnerApp.Services
             _httpClient = httpClient;
         }
 
-        //[ApiController]
-        //[Route("api/[controller]")]
-        //public class SpotifyController : ControllerBase
-        //{
-        //    private readonly HttpClient _httpClient;
-
-        //    public SpotifyController(HttpClient httpClient)
-        //    {
-        //        _httpClient = httpClient;
-        //    }
-        //}
-
-
         public async Task<List<PlaylistItems>> GetUserPlaylists(string accessToken)
         {
             string url = "https://api.spotify.com/v1/me/playlists";
@@ -60,7 +47,7 @@ namespace SpotifyRunnerApp.Services
                 }
 
                 var jsonResponse = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(jsonResponse);
+               // Console.WriteLine(jsonResponse);
                 var playlistResponse = JsonSerializer.Deserialize<PlaylistResponse>(jsonResponse);
                 //Console.WriteLine(playlistResponse.name)
                 if (playlistResponse?.PlaylistsItems == null || playlistResponse.PlaylistsItems.Count == 0)
@@ -362,21 +349,24 @@ namespace SpotifyRunnerApp.Services
 
             // Define the payload for the POST request
             var payload = new Dictionary<string, string>
-    {
-        { "grant_type", "refresh_token" },
-        { "refresh_token", refreshToken },
-    };
+            {
+                { "grant_type", "refresh_token" },
+                { "refresh_token", refreshToken },
+            };
 
             using var httpClient = new HttpClient();
 
-            // Prepare the request with proper headers
+            // Prepare the request with proper headers and content
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, url)
             {
                 Content = new FormUrlEncodedContent(payload)
             };
 
+            // Set the authorization header
             requestMessage.Headers.Add("Authorization", $"Basic {encodedCredentials}");
-            requestMessage.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
+
+            // Content-Type will be set automatically for FormUrlEncodedContent, so no need to set it explicitly
+            // requestMessage.Headers.Add("Content-Type", "application/x-www-form-urlencoded"); // REMOVE this line
 
             var response = await httpClient.SendAsync(requestMessage);
 
@@ -388,12 +378,11 @@ namespace SpotifyRunnerApp.Services
             var jsonResponse = await response.Content.ReadAsStringAsync();
             var tokenData = JsonSerializer.Deserialize<TokenResponse>(jsonResponse);
 
-            // Here you can upsert the new token data into the database
-            //await UpsertUser(user.Username, tokenData.AccessToken, tokenData.ExpiresIn, tokenData.RefreshToken);
+            // Optionally, upsert the new token data into the database
+            // await UpsertUser(user.Username, tokenData.AccessToken, tokenData.ExpiresIn, tokenData.RefreshToken);
 
             return tokenData; // Return the token data for further use if needed
         }
-
 
 
         public async Task<string> GetUserIdFromToken(string accessToken)
@@ -423,13 +412,13 @@ namespace SpotifyRunnerApp.Services
             };
 
             string queryString = QueryStringFromDictionary(queryParams);
-            Console.WriteLine($"https://accounts.spotify.com/authorize?{queryString}");
+            //Console.WriteLine($"https://accounts.spotify.com/authorize?{queryString}");
             return $"https://accounts.spotify.com/authorize?{queryString}";
         }
         private static string QueryStringFromDictionary(Dictionary<string, string> queryParams)
         {
             var url = string.Join("&", queryParams.Select(kvp => $"{kvp.Key}={Uri.EscapeDataString(kvp.Value)}"));
-            Console.WriteLine(url);
+           // Console.WriteLine(url);
             return url;
         }
     }

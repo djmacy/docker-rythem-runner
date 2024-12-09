@@ -16,57 +16,86 @@ namespace SpotifyRunnerApp.Services
 
         public async Task UpsertUser(string userId, string accessToken, int expiresIn, string refreshToken)
         {
-            var existingUser = await _dbContext.spotify_user.FirstOrDefaultAsync(u => u.Username == userId);
-
-            if (existingUser != null)
+            try
             {
-                existingUser.AccessToken = accessToken;
-                existingUser.ExpiresIn = expiresIn;
-                existingUser.RefreshToken = refreshToken;
-                existingUser.CreatedAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); // Update the timestamp
+                var existingUser = await _dbContext.spotify_user.FirstOrDefaultAsync(u => u.Username == userId);
 
-                _dbContext.spotify_user.Update(existingUser);
-            }
-            else
-            {
-                var newUser = new SpotifyUser
+                if (existingUser != null)
                 {
-                    Username = userId,
-                    AccessToken = accessToken,
-                    ExpiresIn = expiresIn,
-                    RefreshToken = refreshToken,
-                    CreatedAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
-                };
+                    existingUser.AccessToken = accessToken;
+                    existingUser.ExpiresIn = expiresIn;
+                    existingUser.RefreshToken = refreshToken;
+                    existingUser.CreatedAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); // Update the timestamp
 
-                await _dbContext.spotify_user.AddAsync(newUser);
+                    _dbContext.spotify_user.Update(existingUser);
+                }
+                else
+                {
+                    var newUser = new SpotifyUser
+                    {
+                        Username = userId,
+                        AccessToken = accessToken,
+                        ExpiresIn = expiresIn,
+                        RefreshToken = refreshToken,
+                        CreatedAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+                    };
+
+                    await _dbContext.spotify_user.AddAsync(newUser);
+                }
+
+                await _dbContext.SaveChangesAsync();
             }
+            catch (Exception ex)
+            {
+                // Log the exception (optional: use a logger here)
+                Console.Error.WriteLine($"Error in UpsertUser: {ex.Message}");
 
-            await _dbContext.SaveChangesAsync();
+                // Handle the error as needed (e.g., returning a specific response or throwing custom exception)
+                throw new InvalidOperationException("An error occurred while updating the user.");
+            }
         }
 
-        // Method to get the AccessToken for a given user by their Username
+
         public async Task<string> GetAccessTokenByUsername(string username)
         {
-            long current = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            // Awaiting the asynchronous database call
-            var user = await _dbContext.Set<SpotifyUser>().FirstOrDefaultAsync(u => u.Username == username);
-            if (user == null)
+            try
             {
-                throw new Exception("User not found");
+                long current = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                var user = await _dbContext.Set<SpotifyUser>().FirstOrDefaultAsync(u => u.Username == username);
+                if (user == null)
+                {
+                    throw new Exception("User not found");
+                }
+
+                long created = user.CreatedAt;
+                long expired = user.ExpiresIn + created;
+
+                Console.WriteLine("Created: " + created + " Expired: " + expired);
+                Console.WriteLine("Old Token: " + user.AccessToken);
+
+                if (expired <= current)
+                {
+                    // var newToken = await _spotifyAPIService.RefreshAccessToken(user.RefreshToken);
+                    //Console.WriteLine("Refresh token info: " + newToken);
+                    // await UpsertUser(user.Username, newToken.AccessToken, newToken.ExpiresIn, newToken.RefreshToken);
+                    //Console.WriteLine("New Token: " + newToken.AccessToken);
+                    //return newToken.AccessToken;
+                    return null;
+                }
+
+                // Return the existing access token if not expired
+                return user.AccessToken;
             }
-            long created = user.CreatedAt;
-            long expired = user.ExpiresIn + created;
-            if (expired <= current)
+            catch (Exception ex)
             {
-                var newToken = await _spotifyAPIService.RefreshAccessToken(user.RefreshToken);
-                await UpsertUser(user.Username, newToken.AccessToken, newToken.ExpiresIn, newToken.RefreshToken);
-                return newToken.AccessToken;
-                //If expired perform logic to grab new token using the refresh token from user record and upsert new info into database
+                // Log the exception (optional: use a logger here)
+                Console.Error.WriteLine($"Error in GetAccessTokenByUsername: {ex.Message}");
+
+                // Handle the error as needed (e.g., returning a specific response or throwing custom exception)
+                throw new InvalidOperationException("An error occurred while fetching the access token.");
             }
-            
-            // Check if user is null before accessing AccessToken
-            return user.AccessToken; // Return the access token or null if not found
         }
+
     }
 
 }

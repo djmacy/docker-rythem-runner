@@ -317,8 +317,7 @@ export const getFilteredLikedSongs = async (songIds, lowerBound, upperBound) => 
             throw new Error(errorData.message || "Failed to get songs from playlist");
         }
         return await response.json();
-
     } catch(error) {
-        throw new Error(`Error getting filtered songs: ${error}`);
+        console.error(`Error grabbing songs from playlist: ${error}`);
     }
 }

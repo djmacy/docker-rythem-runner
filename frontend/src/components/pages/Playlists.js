@@ -7,6 +7,7 @@ import Skeleton from "../Skeleton";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import ModalDevices from "../ModalDevices";
 import ModalQueue from "../ModalQueue";
+import ModalForbidden from "../ModalForbidden";
 
 
 const Playlists = () => {
@@ -25,6 +26,7 @@ const Playlists = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [canQueue, setCanQueue] = useState(false);
     const [isModalQueueOpen, setIsModalQueueOpen] = useState(false);
+    const [isModalForbiddenOpen, setIsModalForbiddenOpen] = useState(false);
     const [queueResponse, setQueueResponse] = useState(null);
 
 
@@ -87,11 +89,6 @@ const Playlists = () => {
         }
     };
 
-    // useEffect(() => {
-    //
-    //     console.log(devices); // This will log when `devices` changes
-    // }, [devices]);
-
     useEffect(() => {
         if (loading) {
             document.body.style.overflow = 'hidden';
@@ -153,8 +150,18 @@ const Playlists = () => {
                 }
                // console.log('Finding songs with playlists:', selectedCards);
                 const filteredSongs = await getSongsFromPlaylists(selectedCards, lowerBound, upperBound);
-              //  console.log('Songs with playlists:', songs);
-                if (filteredSongs.data?.length === 0) {
+
+                // If no filtered audio features are found or there's an error, handle it
+                if (!filteredSongs || filteredSongs?.message) {
+                    setSongs([]);
+                    setIsModalForbiddenOpen(true);  // Display the modal for an error
+                    setLoading(false);      // Hide the loading indicator
+                    // Optional: Log the specific error message
+                    console.error(filteredSongs?.message || "Unknown error during filtering.");
+                    return; // Exit early if there's an error
+                }
+
+                if (filteredSongs?.data.length === 0) {
                     setSongs([]);
                   //  console.log(songs.length);
                     setError("No songs found matching the criteria."); // Update state for error message
@@ -320,6 +327,9 @@ const Playlists = () => {
                         Array.from({length: 10}).map((_, index) => (
                             <Skeleton key={index}/>
                         ))
+                    ) : filteredPlaylists.length === 0 ? (
+                        // Show message if no playlists are found
+                        <p>No playlists found.</p>
                     ) : (
                         // Show actual playlist cards once the data is loaded
                         filteredPlaylists.map((playlist) => (
@@ -330,7 +340,9 @@ const Playlists = () => {
                                 image={playlist.images[0]?.url || ''}
                                 totalTracks={parseInt(playlist.tracks?.total) || 0}
                                 isSelected={selectedCards.includes(playlist.id)}
-                                onSelect={(id) => handleSelect(id, parseInt(playlist.tracks?.total) || 0)} // Pass totalTracks to handleSelect
+                                onSelect={(id) =>
+                                    handleSelect(id, parseInt(playlist.tracks?.total) || 0)
+                                } // Pass totalTracks to handleSelect
                             />
                         ))
                     )}
@@ -396,6 +408,8 @@ const Playlists = () => {
                     <h2>Queueing Songs</h2>
                 </div>
             )}
+
+            <ModalForbidden isOpen={isModalForbiddenOpen} onClose={() => setIsModalForbiddenOpen(false)} />
             <ModalDevices isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
             <ModalQueue
                 isOpen={isModalQueueOpen && !isModalOpen}

@@ -6,6 +6,7 @@ import SpriteAnimation from "../SpriteAnimation";
 import SongSkeleton from "../SongSkeleton";
 import ModalDevices from "../ModalDevices";
 import ModalQueue from "../ModalQueue";
+import ModalForbidden from "../ModalForbidden";
 
 const LikedSongs = () => {
     //used to manage the state of the slider
@@ -37,6 +38,9 @@ const LikedSongs = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     //used to conditionally show the modal after queue is finished
     const [isModalQueueOpen, setIsModalQueueOpen] = useState(false);
+    //modal for 403 error since spotify does not want to give me audio features yet :(. Hopefully ext request gets
+    //approved and I will be able to use the audio features endpoint once again
+    const [isModalForbiddenOpen, setIsModalForbiddenOpen] = useState(false);
     //let us know if we had success or failure
     const [queueResponse, setQueueResponse] = useState(null);
     const increment = 10;
@@ -122,15 +126,25 @@ const LikedSongs = () => {
         const upperBound = parseInt(minBpm) + increment;
         try {
             setIsLoading(true);
-
             // Extract only the song IDs
             const songIds = songs.map(song => song.id);
-
             // Pass only the IDs in the request
             const filteredAudioFeatures = await getFilteredLikedSongs(songIds, lowerBound, upperBound);
             //console.log(filteredAudioFeatures);
-            // If no filtered audio features are found, return early
-            if (!filteredAudioFeatures || filteredAudioFeatures.data?.length === 0) {
+            // If no filtered audio features are found or there's an error, handle it
+            console.log("DM: before logging audio features");
+            console.log(filteredAudioFeatures);
+            if (!filteredAudioFeatures || filteredAudioFeatures?.message) {
+                setIsModalForbiddenOpen(true);  // Display the modal for an error
+                setIsFiltered(false);     // Ensure the filter result is cleared
+                setCanFilter(true);       // Allow retrying the filter
+                setIsLoading(false);      // Hide the loading indicator
+                // Optional: Log the specific error message
+                console.error(filteredAudioFeatures?.message || "Unknown error during filtering.");
+                return; // Exit early if there's an error
+            }
+
+            if (filteredAudioFeatures.data?.length === 0) {
                 setFilteredSongs([]);
                 setIsFiltered(true); // Still mark as filtered
                 setCanFilter(false);
@@ -154,9 +168,15 @@ const LikedSongs = () => {
         } catch (error) {
             console.error('Filter failed:', error);
         } finally {
-            setIsFiltered(true);
-            setCanFilter(false);
-            setIsLoading(false);
+            if (isModalForbiddenOpen) {
+                setIsFiltered(false);
+                setCanFilter(true);
+            } else {
+                setIsFiltered(true);
+                setCanFilter(false);
+                setIsLoading(false);
+            }
+
         }
     };
 
@@ -265,7 +285,7 @@ const LikedSongs = () => {
                                 ? 'Still grabbing your liked songs, please be patient...'
                                 : 'Grabbing your liked songs'
                             : songs.length === 0
-                                ? 'Failed to retrieve liked songs'
+                                ? 'Failed to retrieve liked songs. Please make sure you have Liked Songs on Spotify.'
                                 : filteredSongs.length === 0 && songs.length !== 0
                                     ? 'No songs found matching your criteria. Please try adjusting the BPM.'
                                     : `${filteredSongs.length} Songs Found`}
@@ -340,6 +360,7 @@ const LikedSongs = () => {
                     <h2>Queueing Songs</h2>
                 </div>
             )}
+            <ModalForbidden isOpen={isModalForbiddenOpen} onClose={() => setIsModalForbiddenOpen(false)} />
             <ModalDevices isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
             <ModalQueue
                 isOpen={isModalQueueOpen && !isModalOpen}
