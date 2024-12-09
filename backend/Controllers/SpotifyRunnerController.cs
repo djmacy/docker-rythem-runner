@@ -191,27 +191,38 @@ namespace spotifyRunnerApp.Controllers
         [HttpGet("isPremium")]
         public async Task<IActionResult> isPremium()
         {
-            string username = HttpContext.Session.GetString("UserId");
-            if (username == null)
+            try
             {
-                return BadRequest(new { error = "No username provided" });
-            }
+                string username = HttpContext.Session.GetString("UserId");
+                if (username == null)
+                {
+                    return BadRequest(new { error = "No username provided" });
+                }
 
-            string accessToken = await _userService.GetAccessTokenByUsername(username);
-            if (string.IsNullOrEmpty(accessToken))
+                string accessToken = await _userService.GetAccessTokenByUsername(username);
+                if (string.IsNullOrEmpty(accessToken))
+                {
+                    HttpContext.Session.Remove("UserId");
+                    return Unauthorized(new { error = "AccessToken is missing or invalid" });
+                }
+
+                var isPremiumResponse = await _spotifyAPIService.GetUserProfile(accessToken);
+                if (isPremiumResponse == null)
+                {
+                    return BadRequest(new { error = "No profile found" });
+                }
+
+                // Return JSON object instead of plain string
+                return Ok(new { product = isPremiumResponse.Product });
+            }
+            catch (Exception ex)
             {
-                HttpContext.Session.Remove("UserId");
-                return Unauthorized(new { error = "AccessToken is missing or invalid" });
-            }
+                // Log the error (optional, could be a more detailed logging solution here)
+                Console.Error.WriteLine($"Error in isPremium: {ex.Message}");
 
-            var isPremiumResponse = await _spotifyAPIService.GetUserProfile(accessToken);
-            if (isPremiumResponse == null)
-            {
-                return BadRequest(new { error = "No profile found" });
+                // Return a generic error message with a 500 status code
+                return StatusCode(500, new { message = "An error occurred while processing your request", details = ex.Message });
             }
-
-            // Return JSON object instead of plain string
-            return Ok(new { product = isPremiumResponse.Product });
         }
 
 
