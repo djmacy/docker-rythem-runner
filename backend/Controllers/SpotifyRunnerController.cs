@@ -179,6 +179,7 @@ namespace spotifyRunnerApp.Controllers
             }
             catch (Exception ex)
             {
+                HttpContext.Session.Remove("UserId");
                 // Log the error (optional, could be a more detailed logging solution here)
                 Console.Error.WriteLine($"Error in getDevices: {ex.Message}");
 
@@ -217,6 +218,7 @@ namespace spotifyRunnerApp.Controllers
             }
             catch (Exception ex)
             {
+                HttpContext.Session.Remove("UserId");
                 // Log the error (optional, could be a more detailed logging solution here)
                 Console.Error.WriteLine($"Error in isPremium: {ex.Message}");
 
