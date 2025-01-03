@@ -1,0 +1,1 @@
+Making repo public since Spotify "depracated" there audio features endpoint making this app non-functional. This project is deployed using Docker using React as a frontend, .Net as the backend, and PostgreSQL as the db. 
